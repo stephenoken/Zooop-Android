@@ -1,2 +1,2 @@
-# Zoop-Android
-Android Application of the App
+# Zooop-Android
+## The world belongs to Zooop!
