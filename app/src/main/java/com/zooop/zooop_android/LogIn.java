@@ -1,55 +1,78 @@
 package com.zooop.zooop_android;
 
+
+import android.app.Activity;
+import android.app.Fragment;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.view.View;
-import android.view.Menu;
-import android.view.MenuItem;
+
+import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.widget.TextView;
 
-public class LogIn extends AppCompatActivity {
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.FacebookSdk;
+import com.facebook.login.LoginResult;
+import com.facebook.login.widget.LoginButton;
 
+
+public class LogIn extends Activity {
+    private TextView info;
+    private CallbackManager callbackManager; //Used to route calls back to fb SDK
+    private LoginButton loginButton;//  when someone clicks on the button, the login is initiated with the set permissions.
+
+    //  The button follows the login state,
+    //  and displays the correct text based on someone's authentication state
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+        super.onCreate(savedInstanceState); // Saves State and re-renders it when device is rotated
+        FacebookSdk.sdkInitialize(getApplicationContext()); //Initializing facebook sdk
         setContentView(R.layout.activity_log_in);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+        callbackManager = CallbackManager.Factory.create();
+        info = (TextView) findViewById(R.id.HelloWorld);
+        loginButton = (LoginButton) findViewById(R.id.login_button);
+        loginButton.setReadPermissions("user_friends");
+
+        loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+            @Override            //Customize the properties of login button
+            public void onSuccess(LoginResult loginResult) {
+                info.setText(
+                        "User ID: "
+                                + loginResult.getAccessToken().getUserId()
+                                + "\n" +
+                                "Auth Token: "
+                                + loginResult.getAccessToken().getToken()
+                );
+            }
+
             @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+            public void onCancel() {
+                // App code
+                info.setText("Facebook login attempt Cancelled");
+            }
+
+            @Override
+            public void onError(FacebookException exception) {
+                // App code
+                info.setText("Login Error");
+                Log.d("On Cancel", "On Error");
             }
         });
-        TextView textView = (TextView)findViewById(R.id.HelloWorld);
-        textView.setText("Hello Moon");
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_log_in, menu);
-        return true;
-    }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
 
-        return super.onOptionsItemSelected(item);
+    @Override  //Tapping the login button creates a new activity, this function handles this activity
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        callbackManager.onActivityResult(requestCode, resultCode, data);
     }
 }
+
+
+
