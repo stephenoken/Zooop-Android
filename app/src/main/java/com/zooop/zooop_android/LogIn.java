@@ -2,12 +2,10 @@ package com.zooop.zooop_android;
 
 
 import android.app.Activity;
-import android.app.Fragment;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
-import android.support.v4.app.FragmentActivity;
+
 import android.util.Log;
 import android.widget.TextView;
 
@@ -36,7 +34,6 @@ public class LogIn extends Activity {
         info = (TextView) findViewById(R.id.HelloWorld);
         loginButton = (LoginButton) findViewById(R.id.login_button);
         loginButton.setReadPermissions("user_friends");
-
         loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override            //Customize the properties of login button
             public void onSuccess(LoginResult loginResult) {
@@ -47,6 +44,10 @@ public class LogIn extends Activity {
                                 "Auth Token: "
                                 + loginResult.getAccessToken().getToken()
                 );
+
+
+
+
             }
 
             @Override
@@ -62,15 +63,17 @@ public class LogIn extends Activity {
                 Log.d("On Cancel", "On Error");
             }
         });
+
+
     }
 
 
-
-
-    @Override  //Tapping the login button creates a new activity, this function handles this activity
+    @Override
+    //Tapping the login button creates a new activity, this function handles this activity
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         callbackManager.onActivityResult(requestCode, resultCode, data);
+
     }
 }
 
