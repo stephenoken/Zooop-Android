@@ -46,6 +46,11 @@ public class LogIn extends Activity {
                 );
 
 
+                        Intent i = new Intent(
+                                LogIn.this,
+                                UserIntro.class);
+                        startActivity(i);
+
 
 
             }
@@ -73,6 +78,7 @@ public class LogIn extends Activity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         callbackManager.onActivityResult(requestCode, resultCode, data);
+
 
     }
 }
