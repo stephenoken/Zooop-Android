@@ -1,25 +1,25 @@
 package com.zooop.zooop_android;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 
-public class LogIn extends AppCompatActivity {
-
+/**
+ * Created by anuj on 2/2/2016.
+ */
+public class homeScreen extends AppCompatActivity {
     EditText nickname;
     EditText favCuisine;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_log_in);
+        setContentView(R.layout.activity_home_screen);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -30,7 +30,7 @@ public class LogIn extends AppCompatActivity {
             @Override
             public void onClick(View view){
                 Intent i=new Intent(
-                        LogIn.this,
+                        homeScreen.this,
                         afterLogin.class);
                 startActivity(i);
             }
