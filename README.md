@@ -2,11 +2,11 @@
 ## The world belongs to Zooop!
 ### Design Specs
 #### Colors
-<span style="background-color: #0288D1; color: #FFF">▶︎ Primary Color </span>
+- ▶︎ Primary Color
 ```
 #0288D1
 ```
-<span style="background-color: #313131; color: #FFF">▶︎ Secondary Color </span>
+- ▶︎ Secondary Color
 ```
 #313131
 ```
