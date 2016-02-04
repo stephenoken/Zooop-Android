@@ -8,23 +8,26 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    android:background="#E3E3E3"
+    android:background="#ffffff"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.zooop.zooop_android.LogIn"
+    tools:context=".ui.LogInActivity"
     tools:showIn="@layout/activity_log_in">
 
-    <TextView
-        android:id="@+id/HelloWorld"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-    <com.facebook.login.widget.LoginButton
-        android:id="@+id/login_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="123dp"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerVertical="true">
+
+        <com.facebook.login.widget.LoginButton
+            android:id="@+id/login_button"
+            android:layout_width="300dp"
+            android:layout_height="200dp"
+            android:layout_gravity="center"
+            android:layout_marginBottom="127dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true" />
+    </FrameLayout>
 
 
 </RelativeLayout>
