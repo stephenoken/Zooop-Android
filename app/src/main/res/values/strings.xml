@@ -4,4 +4,5 @@
     <string name="facebook_app_id">934271149972711</string>
     <string name="title_activity_home">home</string>
     <string name="title_activity_user_intro">UserIntro</string>
+    <string name="title_activity_discover_map">Map</string>
 </resources>
