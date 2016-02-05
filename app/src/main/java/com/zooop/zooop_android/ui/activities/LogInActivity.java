@@ -1,4 +1,4 @@
-package com.zooop.zooop_android.ui;
+package com.zooop.zooop_android.ui.activities;
 
 
 import android.app.Activity;
@@ -45,9 +45,7 @@ public class LogInActivity extends Activity {
             public void onSuccess(LoginResult loginResult) {
                 String userID = loginResult.getAccessToken().getUserId();
                 String token = loginResult.getAccessToken().getToken();
-                String infoText = String.format("User ID: %s \n Auth Token: %s", userID, token);
 
-                info.setText(infoText);
                 loggedIn();
             }
 

@@ -1,4 +1,4 @@
-package com.zooop.zooop_android.ui;
+package com.zooop.zooop_android.ui.activities;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;

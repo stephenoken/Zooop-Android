@@ -1,4 +1,4 @@
-package com.zooop.zooop_android.ui;
+package com.zooop.zooop_android.ui.fragments;
 
 import android.support.v4.app.Fragment;
 import android.os.Bundle;

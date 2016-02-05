@@ -1,4 +1,4 @@
-package com.zooop.zooop_android.ui;
+package com.zooop.zooop_android.ui.activities;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;

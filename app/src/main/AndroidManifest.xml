@@ -20,7 +20,7 @@
 
         /******** Launcher ********/
         <activity
-            android:name=".ui.LogInActivity"
+            android:name=".ui.activities.LogInActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -36,12 +36,12 @@
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
         /******** Home ********/
         <activity
-            android:name=".ui.HomeActivity"
+            android:name=".ui.activities.HomeActivity"
             android:label="@string/title_activity_home"
             android:theme="@style/AppTheme.NoActionBar" />
         /******** UserIntro ********/
         <activity
-            android:name=".ui.UserIntroActivity"
+            android:name=".ui.activities.UserIntroActivity"
             android:label="@string/title_activity_user_intro"
             android:theme="@style/AppTheme.NoActionBar" />
     </application>

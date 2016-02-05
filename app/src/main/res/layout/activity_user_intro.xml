@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context=".ui.LogInActivity">
+    tools:context=".ui.activities.LogInActivity">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
@@ -13,8 +13,97 @@
         android:theme="@style/AppTheme.AppBarOverlay">
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/content_user_intro" />
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        tools:context=".ui.activities.LogInActivity"
+        tools:showIn="@layout/activity_user_intro">
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Little bit more about you!"
+            android:id="@+id/wlcmtxt1"
+            android:layout_marginTop="20dp"
+            android:layout_alignParentTop="true"
+            android:textSize="30dp"
+            android:textColor="@color/colorPrimary"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_alignEnd="@+id/fab"
+            android:layout_alignParentStart="true" />
 
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_done_white"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            app:backgroundTint="@color/colorPrimary"
+            android:layout_marginRight="20dp"
+            android:layout_marginBottom="20dp" />
+
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="20dp"
+            android:layout_alignEnd="@+id/fab"
+            android:layout_marginRight="20dp">
+
+            <TextView
+                android:layout_width="159dp"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="What is your nickname?"
+                android:id="@+id/txtvw1"
+                android:textStyle="normal"
+                android:textSize="14dp"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentStart="true"
+                android:layout_marginTop="135dp" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/nickInput"
+                android:width="100dp"
+                android:textColorHighlight="#f23123"
+                android:layout_below="@+id/txtvw1"
+                android:layout_alignParentStart="true"
+                android:layout_alignEnd="@+id/txtvw1"
+                android:textStyle="normal"
+                android:contextClickable="false" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="What is your favourite Cuisine?"
+                android:id="@+id/textView1"
+                android:textStyle="normal"
+                android:textSize="14dp"
+                android:layout_marginTop="40dp"
+                android:layout_below="@+id/nickInput"
+                android:layout_alignParentStart="true" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/favCousineInput"
+                android:width="100dp"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/textView1"
+                android:layout_alignParentLeft="true"
+                android:textColorHighlight="@color/colorPrimary" />
+
+        </TableLayout>
+
+    </RelativeLayout>
 
 </android.support.design.widget.CoordinatorLayout>
