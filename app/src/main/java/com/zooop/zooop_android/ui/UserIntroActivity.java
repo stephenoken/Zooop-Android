@@ -3,8 +3,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -35,11 +35,11 @@ public class UserIntroActivity extends AppCompatActivity {
             startActivity();
         }
         else {
-            nickname = (EditText) findViewById(R.id.editText);
-            favCuisine = (EditText) findViewById(R.id.editText2);
+            nickname = (EditText) findViewById(R.id.nickInput);
+            favCuisine = (EditText) findViewById(R.id.favCousineInput);
 
-            Button done = (Button) findViewById(R.id.button);
-            done.setOnClickListener(new View.OnClickListener() {
+            FloatingActionButton submit = (FloatingActionButton) findViewById(R.id.fab);
+            submit.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     //store values permanent
