@@ -36,7 +36,7 @@
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
         /******** Home ********/
         <activity
-            android:name=".ui.home"
+            android:name=".ui.HomeActivity"
             android:label="@string/title_activity_home"
             android:theme="@style/AppTheme.NoActionBar" />
         /******** UserIntro ********/

@@ -5,7 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import com.zooop.zooop_android.R;
 
 
-public class home extends AppCompatActivity {
+public class HomeActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

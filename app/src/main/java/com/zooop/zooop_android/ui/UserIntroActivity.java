@@ -8,7 +8,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 
 import com.zooop.zooop_android.R;
@@ -59,7 +58,7 @@ public class UserIntroActivity extends AppCompatActivity {
     }
 
     private void startActivity() {
-        Intent i=new Intent(UserIntroActivity.this, home.class);
+        Intent i=new Intent(UserIntroActivity.this, HomeActivity.class);
         startActivity(i);
     }
 

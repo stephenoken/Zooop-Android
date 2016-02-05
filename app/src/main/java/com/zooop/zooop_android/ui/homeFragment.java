@@ -8,9 +8,9 @@ import android.view.ViewGroup;
 import com.zooop.zooop_android.R;
 
 
-public class homeFragment extends Fragment {
+public class HomeFragment extends Fragment {
 
-    public homeFragment() {
+    public HomeFragment() {
     }
 
     @Override
