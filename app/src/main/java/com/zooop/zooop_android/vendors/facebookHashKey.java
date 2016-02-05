@@ -1,4 +1,4 @@
-package com.zooop.zooop_android;
+package com.zooop.zooop_android.vendors;
 
 import android.app.Application;
 import android.content.pm.PackageInfo;
