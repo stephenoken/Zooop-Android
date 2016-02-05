@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.TextView;
 
+import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
@@ -29,13 +30,28 @@ public class LogInActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState); // Saves State and re-renders it when device is rotated
 
-        if (BuildConfig.DEBUG) {
-            loggedIn();
-        }
-
-        FacebookSdk.sdkInitialize(getApplicationContext()); //Initializing facebook sdk
+        /** Initializing facebook sdk **/
+        FacebookSdk.sdkInitialize(getApplicationContext());
         setContentView(R.layout.activity_log_in);
 
+        /** check if user is already logged in **/
+        AccessToken fbAccessToken = AccessToken.getCurrentAccessToken();
+        if(fbAccessToken != null || BuildConfig.DEBUG) {
+            loggedIn();
+        }
+        else {
+            fbLogin();
+        }
+    }
+
+    @Override
+    //Tapping the login button creates a new activity, this function handles this activity
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        callbackManager.onActivityResult(requestCode, resultCode, data);
+    }
+
+    private void fbLogin() {
         callbackManager = CallbackManager.Factory.create();
         loginButton = (LoginButton) findViewById(R.id.login_button);
         loginButton.setReadPermissions("user_friends");
@@ -61,13 +77,6 @@ public class LogInActivity extends Activity {
                 Log.d("Facebook exception", exception.getMessage());
             }
         });
-    }
-
-    @Override
-    //Tapping the login button creates a new activity, this function handles this activity
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        callbackManager.onActivityResult(requestCode, resultCode, data);
     }
 
     private void loggedIn(){

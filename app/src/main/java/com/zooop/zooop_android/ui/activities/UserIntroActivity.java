@@ -25,8 +25,8 @@ public class UserIntroActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_intro);
 
+        /** retrieve the nickname and the favourite cuisine from the user **/
         myPreferences = getSharedPreferences ("userInfo", Context.MODE_PRIVATE);
-
         String nickStr = myPreferences.getString("nickName", null);
         String favCuisStr = myPreferences.getString("favCuisine", null);
 
@@ -53,7 +53,7 @@ public class UserIntroActivity extends AppCompatActivity {
 
     private void storeKeyForValue(String value, String key) {
         SharedPreferences.Editor editor = myPreferences.edit();
-        editor.putString("nickName", nickname.getText().toString());
+        editor.putString(value, key);
         editor.apply();
     }
 
