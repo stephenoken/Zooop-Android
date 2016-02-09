@@ -1,7 +1,8 @@
-package com.zooop.zooop_android.ui.fragments;
+package com.zooop.zooop_android.ui.activities;
 
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -23,6 +24,8 @@ public class DiscoverMapActivity extends FragmentActivity implements OnMapReadyC
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+        Toast.makeText(this,"Hello",Toast.LENGTH_SHORT).show();
     }
 
 
@@ -45,7 +48,7 @@ public class DiscoverMapActivity extends FragmentActivity implements OnMapReadyC
         mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
 
         //Zooop map settings
-        mMap.setMyLocationEnabled(true);
+//        mMap.setMyLocationEnabled(true);
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney, 13));
 
     }
