@@ -58,7 +58,7 @@ public class UserIntroActivity extends AppCompatActivity {
     }
 
     private void startActivity() {
-        Intent i=new Intent(UserIntroActivity.this, DiscoverMapActivity.class);
+        Intent i=new Intent(UserIntroActivity.this, HomeActivity.class);
         startActivity(i);
     }
 
