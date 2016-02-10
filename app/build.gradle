@@ -30,4 +30,7 @@ dependencies {
     compile 'com.facebook.android:facebook-android-sdk:4.6.0'
     compile 'com.google.android.gms:play-services-appindexing:8.1.0'
     compile 'com.google.android.gms:play-services:8.4.0'
+    compile('com.mikepenz:materialdrawer:4.6.4@aar') {
+        transitive = true
+    }
 }
