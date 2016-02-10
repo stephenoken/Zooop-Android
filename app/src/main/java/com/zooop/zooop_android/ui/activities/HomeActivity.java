@@ -17,7 +17,7 @@ import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
 import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 import com.zooop.zooop_android.R;
-import com.zooop.zooop_android.ui.fragments.DiscoverMapActivity;
+import com.zooop.zooop_android.ui.fragments.DiscoverMapFragment;
 
 
 public class HomeActivity extends AppCompatActivity {
@@ -53,7 +53,7 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private void selectItem(int position){
-        Fragment fragment = new DiscoverMapActivity();
+        Fragment fragment = new DiscoverMapFragment();
 
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.content_frame,fragment).commit();

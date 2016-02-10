@@ -17,7 +17,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.zooop.zooop_android.R;
 
-public class DiscoverMapActivity extends Fragment implements OnMapReadyCallback {
+public class DiscoverMapFragment extends Fragment implements OnMapReadyCallback {
 
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerList;
@@ -32,7 +32,7 @@ public class DiscoverMapActivity extends Fragment implements OnMapReadyCallback 
 //    @Override
 //    protected void onCreate() {
 //        super.onCreate(savedInstanceState);
-////        setContentView(R.layout.activity_discover_map);
+////        setContentView(R.layout.fragment_discover_map);
 //
 //        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
 //        this.getMapAsync(this);
@@ -41,7 +41,7 @@ public class DiscoverMapActivity extends Fragment implements OnMapReadyCallback 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.activity_discover_map, container, false);
+        View view = inflater.inflate(R.layout.fragment_discover_map, container, false);
         SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
         return view;

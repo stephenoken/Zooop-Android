@@ -30,7 +30,7 @@ package="com.zooop.zooop_android">
     <activity android:name=".ui.activities.UserIntroActivity" android:label="@string/title_activity_user_intro"
         android:theme="@style/AppTheme.NoActionBar" />
 
-    <activity android:name=".ui.fragments.DiscoverMapActivity" android:label="@string/title_activity_discover_map">
+    <activity android:name=".ui.fragments.DiscoverMapFragment" android:label="@string/title_activity_discover_map">
 
     </activity>
 </application>
