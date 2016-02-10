@@ -1,13 +1,15 @@
 package com.zooop.zooop_android.ui.fragments;
 
+import android.app.ActionBar;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
+import android.widget.EditText;
+import android.widget.ImageButton;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -19,31 +21,24 @@ import com.zooop.zooop_android.R;
 
 public class DiscoverMapFragment extends Fragment implements OnMapReadyCallback {
 
-    private DrawerLayout mDrawerLayout;
-    private ListView mDrawerList;
-    private ActionBarDrawerToggle mDrawerToggle;
-
-    private CharSequence mDrawerTitle;
-    private CharSequence mTitle;
-    private String[] mMenuTitles;
-
     private GoogleMap mMap;
-
-//    @Override
-//    protected void onCreate() {
-//        super.onCreate(savedInstanceState);
-////        setContentView(R.layout.fragment_discover_map);
-//
-//        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-//        this.getMapAsync(this);
-//    }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_discover_map, container, false);
         SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+        //Creates a search bar
+        EditText searchEditText = new EditText(getContext());
+        searchEditText.setHint(R.string.search);
+        ImageButton searchImageButton = new ImageButton(getContext());
+        searchImageButton.setBackground(getResources().getDrawable(R.drawable.ic_done_white));
+        searchEditText.setLayoutParams(new ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        searchImageButton.setLayoutParams(new ActionBar.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT));
+        Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
+        toolbar.addView(searchEditText);
+        toolbar.addView(searchImageButton);
         return view;
     }
 
