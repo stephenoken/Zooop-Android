@@ -18,6 +18,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.zooop.zooop_android.R;
+import com.zooop.zooop_android.ui.activities.HomeActivity;
 
 public class DiscoverMapFragment extends Fragment implements OnMapReadyCallback {
 
@@ -29,7 +30,6 @@ public class DiscoverMapFragment extends Fragment implements OnMapReadyCallback 
         SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
         createActionBarElements();
-
 
         return view;
     }
@@ -53,12 +53,12 @@ public class DiscoverMapFragment extends Fragment implements OnMapReadyCallback 
         mMap = googleMap;
 
         // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(-34, 151);
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
+        LatLng sydney = new LatLng(53.350140, -6.266155);
+        mMap.addMarker(new MarkerOptions().position(sydney).title("That's you, dude \uD83D\uDE0E"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
 
         //Zooop map settings
-//        mMap.setMyLocationEnabled(true);
+       // mMap.setMyLocationEnabled(true);
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney, 13));
 
     }
