@@ -1,34 +1,52 @@
 package com.zooop.zooop_android.ui.activities;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
+import android.location.Location;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import com.mikepenz.materialdrawer.Drawer;
 import com.mikepenz.materialdrawer.DrawerBuilder;
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
 import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
+import com.zooop.zooop_android.LocationService;
 import com.zooop.zooop_android.R;
 import com.zooop.zooop_android.ui.fragments.DiggyFragment;
 import com.zooop.zooop_android.ui.fragments.DiscoverFragment;
 import com.zooop.zooop_android.ui.fragments.DiscoverMapFragment;
 
-
 public class HomeActivity extends AppCompatActivity {
+
     private Drawer mDrawer;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setDiscoverMapsFragment();
+        LocationService locationService = new LocationService(HomeActivity.this);
+        if(!locationService.locationPermissions()) {
+            locationService.requestLocationPermissions();
+        }
+        else {
+            Log.i("PERMISSIONS", "LOCATION");
+        }
 
+        // set map as initial fragment
+        setDiggyFragment();
+
+        // create menu items
         final PrimaryItem map = new PrimaryItem("Map", 0);
         final Item diggy = new Item("Diggy", 1);
         final Item discover = new Item("Discover", 2);
 
+        // create the menu
         setContentView(R.layout.activity_home);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -62,7 +80,6 @@ public class HomeActivity extends AppCompatActivity {
                 .build();
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         mDrawer.getActionBarDrawerToggle().setDrawerIndicatorEnabled(true);
-
     }
 
     /******* functions: change fragment *******/

@@ -1,7 +1,6 @@
 package com.zooop.zooop_android.ui.fragments;
 
 import android.app.ActionBar;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.Toolbar;
@@ -17,15 +16,19 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.zooop.zooop_android.LocationService;
 import com.zooop.zooop_android.R;
 import com.zooop.zooop_android.ui.activities.HomeActivity;
 
 public class DiscoverMapFragment extends Fragment implements OnMapReadyCallback {
 
     private GoogleMap mMap;
+    LocationService locationService;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        locationService = new LocationService(getActivity());
+
         View view = inflater.inflate(R.layout.fragment_discover_map, container, false);
         SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
@@ -52,14 +55,17 @@ public class DiscoverMapFragment extends Fragment implements OnMapReadyCallback 
     public void onMapReady(GoogleMap googleMap) throws SecurityException{
         mMap = googleMap;
 
+        double[] currentLocation = locationService.getLocation();
+        double latit = currentLocation[0];
+        double longi = currentLocation[1];
+
         // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(53.350140, -6.266155);
-        mMap.addMarker(new MarkerOptions().position(sydney).title("That's you, dude \uD83D\uDE0E"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+        LatLng userLocation = new LatLng(latit, longi);
+        mMap.addMarker(new MarkerOptions().position(userLocation).title("That's you, dude \uD83D\uDE0E"));
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(userLocation));
 
         //Zooop map settings
-       // mMap.setMyLocationEnabled(true);
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney, 13));
-
+        mMap.setMyLocationEnabled(true);
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation, 13));
     }
 }
