@@ -9,7 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.zooop.zooop_android.R;
-import com.google.android.gms.plus.PlusOneButton;
 
 public class DiggyFragment extends Fragment {
 
