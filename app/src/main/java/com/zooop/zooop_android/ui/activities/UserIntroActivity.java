@@ -5,11 +5,15 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
+import com.zooop.zooop_android.LocationService;
 import com.zooop.zooop_android.R;
 
 /**
@@ -37,18 +41,39 @@ public class UserIntroActivity extends AppCompatActivity {
             nickname = (EditText) findViewById(R.id.nickInput);
             favCuisine = (EditText) findViewById(R.id.favCousineInput);
 
+            favCuisine.setOnKeyListener(new View.OnKeyListener() {
+                @Override
+                public boolean onKey(View view, int i, KeyEvent keyEvent) {
+                    if ((keyEvent.getAction() == KeyEvent.ACTION_DOWN) && (i == KeyEvent.KEYCODE_ENTER)) {
+                        storeValsAndContinue();
+                        return true;
+                    }
+                    return false;
+                }
+            });
+
+            View view = this.getCurrentFocus();
+            if (view != null) {
+                InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_IMPLICIT_ONLY);
+            }
+
             FloatingActionButton submit = (FloatingActionButton) findViewById(R.id.fab);
             submit.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    //store values permanent
-                    storeKeyForValue("nickName", favCuisine.getText().toString());
-                    storeKeyForValue("favCuisine", favCuisine.getText().toString());
-
-                    startActivity();
+                    storeValsAndContinue();
                 }
             });
         }
+    }
+
+    private void storeValsAndContinue() {
+        //store values permanent
+        storeKeyForValue("nickName", favCuisine.getText().toString());
+        storeKeyForValue("favCuisine", favCuisine.getText().toString());
+
+        startActivity();
     }
 
     private void storeKeyForValue(String value, String key) {
@@ -60,27 +85,5 @@ public class UserIntroActivity extends AppCompatActivity {
     private void startActivity() {
         Intent i=new Intent(UserIntroActivity.this, HomeActivity.class);
         startActivity(i);
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_log_in, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 }

@@ -7,4 +7,10 @@
     <string name="title_activity_discover_map">Map</string>
 
     <string name="search">Search...</string>
+    <string name="title_activity_diggy">DiggyActivity</string>
+
+    <string name="google_app_id">665662071179</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
