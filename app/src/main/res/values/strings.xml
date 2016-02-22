@@ -6,7 +6,7 @@
     <string name="title_activity_user_intro">UserIntro</string>
     <string name="title_activity_discover_map">Map</string>
 
-    <string name="search">Search...</string>
+    <string name="search">Search for food</string>
     <string name="title_activity_diggy">DiggyActivity</string>
 
     <string name="google_app_id">665662071179</string>
