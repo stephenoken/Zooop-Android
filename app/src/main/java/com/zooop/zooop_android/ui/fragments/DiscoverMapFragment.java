@@ -32,24 +32,8 @@ public class DiscoverMapFragment extends Fragment implements OnMapReadyCallback 
         View view = inflater.inflate(R.layout.fragment_discover_map, container, false);
         SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-        createActionBarElements();
 
         return view;
-    }
-
-    private void createActionBarElements() {
-        //Creates a search bar
-        EditText searchEditText = new EditText(getContext());
-        searchEditText.setHint(R.string.search);
-        searchEditText.setLayoutParams(new ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-
-        ImageButton searchImageButton = new ImageButton(getContext());
-        searchImageButton.setBackground(getResources().getDrawable(R.drawable.ic_done_white));
-        searchImageButton.setLayoutParams(new ActionBar.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-
-        Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
-        toolbar.addView(searchEditText);
-        toolbar.addView(searchImageButton);
     }
 
     public void onMapReady(GoogleMap googleMap) throws SecurityException{
