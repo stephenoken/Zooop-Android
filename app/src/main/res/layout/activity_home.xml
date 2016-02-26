@@ -11,20 +11,49 @@
         android:layout_height="wrap_content"
         android:theme="@style/AppTheme.AppBarOverlay">
 
-        <android.support.design.widget.CoordinatorLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:id="@+id/snackbarPosition">
-        </android.support.design.widget.CoordinatorLayout>
-
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
+            android:paddingTop="0dp"
+            android:paddingBottom="4pt"
+            android:layout_marginRight="10dp"
             android:background="?attr/colorPrimary"
             app:popupTheme="@style/AppTheme.PopupOverlay">
+
+            <LinearLayout
+            android:id="@+id/container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:background="@color/primary_light">
+                <EditText
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="8"
+                    android:paddingTop="6dp"
+                    android:paddingBottom="0dp"
+                    android:minEms="10"
+                    android:hint="@string/search"
+                    android:id="@+id/inputField"
+                    android:singleLine="true"
+                    android:textColor="@color/md_white_1000"
+                    android:backgroundTint="@android:color/transparent"
+                    android:gravity="left"
+                    android:textStyle="normal"
+                    android:imeOptions="actionSend" />
+                <ImageButton
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:paddingTop="0dp"
+                    android:background="@android:color/transparent"
+                    android:src="@drawable/ic_search_white"
+                    android:padding="5dp"
+                    android:adjustViewBounds="true"
+                    android:scaleType="fitCenter"
+                    android:layout_gravity="right"/>
+        </LinearLayout>
 
         </android.support.v7.widget.Toolbar>
 
