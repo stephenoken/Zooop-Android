@@ -27,6 +27,22 @@ public final class AsyncRequest {
                 .post(requestBody)
                 .build();
 
+        ApiCall(request);
+    }
+
+    public void run(String apiCall) throws Exception {
+        String urlString = BASEURL + apiCall;
+        RequestBody body = RequestBody.create(JSON, "");
+
+        Request request = new Request.Builder()
+                .url(urlString)
+                .post(body)
+                .build();
+
+        ApiCall(request);
+    }
+
+    private void ApiCall(Request request) {
         client.newCall(request).enqueue(new Callback() {
             @Override public void onFailure(Call call, IOException e) {
                 e.printStackTrace();
@@ -44,4 +60,5 @@ public final class AsyncRequest {
             }
         });
     }
+
 }

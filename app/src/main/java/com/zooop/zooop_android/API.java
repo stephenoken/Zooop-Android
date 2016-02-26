@@ -12,6 +12,16 @@ import org.json.JSONObject;
 
 public class API extends AppCompatActivity {
 
+    public void fetchAds() {
+        AsyncRequest asynchronousGet = new AsyncRequest();
+
+        try {
+            asynchronousGet.run("getAd");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     public void testAPI() {
 
         // defining sets of paramters
