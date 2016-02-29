@@ -18,7 +18,7 @@ public final class AsyncRequest {
     private final OkHttpClient client = new OkHttpClient();
     API api = new API();
 
-    public void run(String apiCall, String bodyString) throws Exception {
+    public Request run(String apiCall, String bodyString) throws Exception {
         RequestBody requestBody = RequestBody.create(JSON, bodyString);
         String urlString = BASEURL + apiCall;
 
@@ -27,10 +27,10 @@ public final class AsyncRequest {
                 .post(requestBody)
                 .build();
 
-        ApiCall(request);
+        return request;
     }
 
-    public void run(String apiCall) throws Exception {
+    public Request run(String apiCall) throws Exception {
         String urlString = BASEURL + apiCall;
         RequestBody body = RequestBody.create(JSON, "");
 
@@ -39,10 +39,11 @@ public final class AsyncRequest {
                 .post(body)
                 .build();
 
-        ApiCall(request);
+        return request;
     }
 
-    private void ApiCall(Request request) {
+    private void apiCall(Request request) {
+
         client.newCall(request).enqueue(new Callback() {
             @Override public void onFailure(Call call, IOException e) {
                 e.printStackTrace();
@@ -55,6 +56,8 @@ public final class AsyncRequest {
                 for (int i = 0, size = responseHeaders.size(); i < size; i++) {
                     Log.d("RESPONSE HEADER:", responseHeaders.name(i) + ": " + responseHeaders.value(i));
                 }
+
+                Log.i("CALL", call.toString());
 
                 api.receiveResponse(response.body().string());
             }

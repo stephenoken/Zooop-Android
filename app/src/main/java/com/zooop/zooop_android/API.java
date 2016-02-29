@@ -10,13 +10,27 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import org.json.JSONObject;
 
+import java.io.IOException;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.Headers;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+
 public class API extends AppCompatActivity {
 
-    public void fetchAds() {
+    private String adResponse;
+
+    private final OkHttpClient client = new OkHttpClient();
+
+    public void fetchAds(Ads ads) {
         AsyncRequest asynchronousGet = new AsyncRequest();
 
         try {
-            asynchronousGet.run("getAd");
+            Request request =  asynchronousGet.run("getAd");
+            test(request, ads);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -35,14 +49,38 @@ public class API extends AppCompatActivity {
         String bodySTTT = paramsJson.toString();
 
         try {
-            asynchronousGet.run("getInfo", bodySTTT);
+            Request request = asynchronousGet.run("getInfo", bodySTTT);
+            //test(request);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
+    public void test(Request request ,final Ads ads) {
+        client.newCall(request).enqueue(new Callback() {
+            @Override public void onFailure(Call call, IOException e) {
+                e.printStackTrace();
+            }
+
+            @Override public void onResponse(Call call, Response response) throws IOException {
+                if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
+
+                Headers responseHeaders = response.headers();
+                for (int i = 0, size = responseHeaders.size(); i < size; i++) {
+                    Log.d("RESPONSE HEADER:", responseHeaders.name(i) + ": " + responseHeaders.value(i));
+                }
+
+                ads.gotResponse(response.body().string());
+
+                Log.i("CALL", call.toString());
+
+                //api.receiveResponse(response.body().string());
+            }
+        });
+    }
+
     public void receiveResponse(String responseString) {
-        Log.i("RESPONSE", responseString);
+        Log.i("API", responseString);
     }
 
     private JSONObject getParamsJSON(String[] keys, String[] values) {
@@ -79,6 +117,10 @@ public class API extends AppCompatActivity {
             return true;
         }
         return false;
+    }
+
+    public String getAdResponse () {
+        return this.adResponse;
     }
 }
 
