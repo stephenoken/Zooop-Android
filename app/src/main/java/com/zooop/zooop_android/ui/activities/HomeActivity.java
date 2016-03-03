@@ -1,9 +1,6 @@
 package com.zooop.zooop_android.ui.activities;
 
 import android.Manifest;
-import android.app.ActionBar;
-import android.app.Activity;
-import android.content.Context;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
@@ -15,10 +12,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.EditText;
-import android.widget.ImageButton;
-
 import com.mikepenz.materialdrawer.Drawer;
 import com.mikepenz.materialdrawer.DrawerBuilder;
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
@@ -37,9 +30,6 @@ public class HomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Fragment menu = new MenuFragment();
-        changeFragment(menu);
-
         LocationService locationService = new LocationService(HomeActivity.this);
         if(!locationService.locationPermissions()) {
             locationService.requestLocationPermissions();
@@ -49,7 +39,7 @@ public class HomeActivity extends AppCompatActivity {
         }
 
         // set map as initial fragment
-        setDiscoverMapsFragment();
+        setDiggyFragment();
 
         // create menu items
         final PrimaryItem map = new PrimaryItem("Map", 0);
@@ -60,8 +50,6 @@ public class HomeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_home);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle(null);
-
         mDrawer = new DrawerBuilder()
                 .withActivity(this)
                 .withToolbar(toolbar)
@@ -138,14 +126,6 @@ public class HomeActivity extends AppCompatActivity {
             this.index = index;
             this.drawerItem = new SecondaryDrawerItem().withName(name);
         }
-    }
-
-    private Fragment getActiveFragment() {
-        if (getSupportFragmentManager().getBackStackEntryCount() == 0) {
-            return null;
-        }
-        String tag = getSupportFragmentManager().getBackStackEntryAt(getSupportFragmentManager().getBackStackEntryCount() - 1).getName();
-        return getSupportFragmentManager().findFragmentByTag(tag);
     }
 
 }

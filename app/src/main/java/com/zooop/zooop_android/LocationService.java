@@ -30,6 +30,7 @@ public class LocationService extends Service implements LocationListener {
 
     protected LocationManager locationManager;
 
+
     /******** constructor ********/
     public LocationService(Activity activity) {
         this.context = (Context) activity;
@@ -52,6 +53,7 @@ public class LocationService extends Service implements LocationListener {
             } else {
                 if(locationPermissions()) {
                     if (network) {
+                        Log.i(">A>A>A>AA>", "ELSEEEE");
                         locationManager.requestLocationUpdates(
                                 LocationManager.NETWORK_PROVIDER,
                                 timeout,
