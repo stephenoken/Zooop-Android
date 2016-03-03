@@ -32,5 +32,3 @@ proguard/
 captures/
 #Idea files 
 .idea/
-# iml files
-.iml
