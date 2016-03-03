@@ -1,5 +1,6 @@
 package com.zooop.zooop_android.ui.fragments;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.ResultReceiver;
 import android.support.v4.app.Fragment;
@@ -21,6 +22,8 @@ import com.zooop.zooop_android.Screen;
 public class DiscoverFragment extends Fragment {
 
     ScrollView scrollView;
+    Screen screen = new Screen();
+    LinearLayout adsLayer;
 
     public DiscoverFragment() {
         // Required empty public constructor
@@ -37,32 +40,55 @@ public class DiscoverFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_discover, container, false);
 
         // get and setup scrollview
-        scrollView = (ScrollView) view.findViewById(R.id.scrollView);
+        scrollView = (ScrollView) view.findViewById(R.id.adsScrollView);
+        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) scrollView.getLayoutParams();
+        scrollView.setLayoutParams(params);
+
+        // get the chat layer
+        adsLayer = (LinearLayout) scrollView.findViewById(R.id.adsContainer);
+        adsLayer.setBackgroundColor(getResources().getColor(R.color.primary));
 
 
 
-
-
-        Log.i("OOOO", "CALL ME BIYCH");
-
-//        API api = new API();
-//        api.fetchAds(this);
-
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_discover, container, false);
+        return view;
     }
 
-//    private View getAdView() {
-//
-//
-//
-//        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams
-//                (LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-//
-//
-//
-//        return chatField;
-//    }
+    public void addAd(String name, String description, String image, String id, double[] location) {
+
+        TextView textView = getAdView();
+        textView.setText(name);
+        adsLayer.addView(textView);
+
+        TextView textView2 = getAdView();
+        textView2.setText(description);
+        adsLayer.addView(textView2);
+    }
+
+    private TextView getAdView() {
+        TextView chatField = new TextView(getActivity());
+
+        int width = screen.getWidth(getActivity());
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams
+                (LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+
+        params.gravity = Gravity.TOP;
+        params.bottomMargin = 20;
+        chatField.setLayoutParams(params);
+        chatField.setWidth((width / 3) * 2);
+        chatField.setMaxWidth((width / 3) * 2);
+        chatField.setTextSize((float) 18);
+        chatField.setPadding(20, 20, 20, 20);
+
+        chatField.setTextColor(Color.BLACK);
+        chatField.setBackgroundColor(getResources().getColor(R.color.primary));
+        chatField.setText("<><><><><><><><><><><");
+
+        return chatField;
+    }
+
+    public void updateView() {
+
+    }
 
     private void scrollToBottom(){
         scrollView.post(new Runnable() {

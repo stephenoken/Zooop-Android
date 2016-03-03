@@ -30,6 +30,7 @@ public class Ads {
             id = jsonObj.getString("_id");
             location = doubleFromLocationArray(jsonObj.getJSONArray("location").toString());
 
+
             Log.i("FUCK", name + "|" + description+ "|" + image+ "|" + id + "|" + location[0] + "|" + location[1]);
 
         } catch (JSONException e) {
