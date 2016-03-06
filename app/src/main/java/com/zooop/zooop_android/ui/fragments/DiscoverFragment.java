@@ -2,6 +2,8 @@ package com.zooop.zooop_android.ui.fragments;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.os.ResultReceiver;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -14,10 +16,14 @@ import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
-import com.zooop.zooop_android.API;
+import com.zooop.zooop_android.APIService;
 import com.zooop.zooop_android.Ads;
 import com.zooop.zooop_android.R;
 import com.zooop.zooop_android.Screen;
+import com.zooop.zooop_android.ui.ApiCallback;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class DiscoverFragment extends Fragment {
 
@@ -33,8 +39,7 @@ public class DiscoverFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        Ads ad1 = new Ads();
-        ad1.fetchData();
+        getAds();
 
         // get this current view
         View view = inflater.inflate(R.layout.fragment_discover, container, false);
@@ -48,20 +53,50 @@ public class DiscoverFragment extends Fragment {
         adsLayer = (LinearLayout) scrollView.findViewById(R.id.adsContainer);
         adsLayer.setBackgroundColor(getResources().getColor(R.color.primary));
 
-
-
         return view;
     }
 
-    public void addAd(String name, String description, String image, String id, double[] location) {
+    private void getAds() {
 
+        APIService api = new APIService(new ApiCallback() {
+            @Override
+            public void receivedResponse(String responseString) {
+                JSONObject jsonObj = null;
+                try {
+                    jsonObj = new JSONObject(responseString);
+
+                    String name = jsonObj.getString("name");
+                    String description = jsonObj.getString("description");
+                    String image = jsonObj.getString("image");
+                    String id = jsonObj.getString("_id");
+                    String location = jsonObj.getJSONArray("location").toString();
+
+                    final Ads ad = new Ads(name, description, image, id, location);
+
+                    Handler refresh = new Handler(Looper.getMainLooper());
+                    refresh.post(new Runnable() {
+                        public void run() {
+                            addAd(ad);
+                        }
+                    });
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        api.fetchAds();
+    }
+
+    public void addAd(Ads ad) {
         TextView textView = getAdView();
-        textView.setText(name);
+        textView.setText(ad.getName());
         adsLayer.addView(textView);
 
         TextView textView2 = getAdView();
-        textView2.setText(description);
+        textView2.setText(ad.getDescription());
         adsLayer.addView(textView2);
+
+        scrollToBottom();
     }
 
     private TextView getAdView() {
@@ -81,13 +116,8 @@ public class DiscoverFragment extends Fragment {
 
         chatField.setTextColor(Color.BLACK);
         chatField.setBackgroundColor(getResources().getColor(R.color.primary));
-        chatField.setText("<><><><><><><><><><><");
 
         return chatField;
-    }
-
-    public void updateView() {
-
     }
 
     private void scrollToBottom(){

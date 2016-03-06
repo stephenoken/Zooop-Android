@@ -1,7 +1,11 @@
 package com.zooop.zooop_android;
 
+import android.app.Activity;
+import android.content.Context;
 import android.location.Location;
 import android.util.Log;
+
+import com.zooop.zooop_android.ui.ApiCallback;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -18,24 +22,37 @@ public class Ads {
     private String id;
     private double[] location;
 
-    public void gotResponse(String responseString) {
+//    public void gotResponse(String responseString) {
+//
+//        JSONObject jsonObj = null;
+//        try {
+//            jsonObj = new JSONObject(responseString);
+//
+//            name = jsonObj.getString("name");
+//            description = jsonObj.getString("description");
+//            image = jsonObj.getString("image");
+//            id = jsonObj.getString("_id");
+//            location = doubleFromLocationArray(jsonObj.getJSONArray("location").toString());
+//
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//        }
+//    }
 
-        JSONObject jsonObj = null;
-        try {
-            jsonObj = new JSONObject(responseString);
+    public String getName() {
+        return this.name;
+    }
 
-            name = jsonObj.getString("name");
-            description = jsonObj.getString("description");
-            image = jsonObj.getString("image");
-            id = jsonObj.getString("_id");
-            location = doubleFromLocationArray(jsonObj.getJSONArray("location").toString());
+    public String getDescription() {
+        return this.description;
+    }
 
-
-            Log.i("FUCK", name + "|" + description+ "|" + image+ "|" + id + "|" + location[0] + "|" + location[1]);
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+    public Ads(String name, String description, String image, String id, String location) {
+        this.name = name;
+        this.description = description;
+        this.image = image;
+        this.id = id;
+        this.location = doubleFromLocationArray(location);
     }
 
     private double[] doubleFromLocationArray(String jsonStr) {
@@ -45,10 +62,5 @@ public class Ads {
         double b = Double.parseDouble(locationArray[1]);
         double[] dArray = new double []{a,b};
         return dArray;
-    }
-
-    public void fetchData() {
-        API api = new API();
-        api.fetchAds(this);
     }
 }

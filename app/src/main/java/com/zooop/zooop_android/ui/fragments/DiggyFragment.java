@@ -1,8 +1,14 @@
 package com.zooop.zooop_android.ui.fragments;
 
+import android.content.ComponentName;
+import android.content.ServiceConnection;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.IBinder;
+import android.os.Looper;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -14,9 +20,13 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
-
+import com.zooop.zooop_android.APIService;
 import com.zooop.zooop_android.R;
 import com.zooop.zooop_android.Screen;
+import com.zooop.zooop_android.ui.ApiCallback;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class DiggyFragment extends Fragment {
     enum SIDE {
@@ -27,9 +37,16 @@ public class DiggyFragment extends Fragment {
     Screen screen = new Screen();
     LinearLayout chatLayer;
 
+    boolean ServiceIsBind = false;
+
     public DiggyFragment() {
         // Required empty public constructor
     }
+
+//    @Override
+//    public void receivedResponse(String responseString) {
+//            Log.i("--->", responseString);
+//    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -128,18 +145,41 @@ public class DiggyFragment extends Fragment {
 
         // empty the input field
         inputField.setText("");
-
         // get a chat item and add it
         TextView textView = getMsgUser(text);
-        chatLayer.addView(textView);
+        addChatField(textView);
 
-        // default respond from diggy
-        TextView one = getMsgDiggy("Hi, what's up??");
-        chatLayer.addView(one);
-
-        // scroll to end of scrollview
-        scrollToBottom();
+        //send iput to diggyApi and add respond to view
+        retrieveDiggyAnswer(text);
 
         inputField.requestFocus();
+    }
+
+    private void addChatField(TextView textView) {
+        chatLayer.addView(textView);
+        scrollToBottom();
+    }
+
+    private void retrieveDiggyAnswer(String text) {
+        APIService api = new APIService(new ApiCallback() {
+            @Override
+            public void receivedResponse(String responseString) {
+                JSONObject jsonObj = null;
+                try {
+                    jsonObj = new JSONObject(responseString);
+                    final TextView textView = getMsgDiggy(jsonObj.getString("name"));
+
+                    Handler refresh = new Handler(Looper.getMainLooper());
+                    refresh.post(new Runnable() {
+                        public void run() {
+                            addChatField(textView);
+                        }
+                    });
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        api.textDiggy(text);
     }
 }
