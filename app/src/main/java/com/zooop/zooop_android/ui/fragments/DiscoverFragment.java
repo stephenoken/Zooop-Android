@@ -57,7 +57,6 @@ public class DiscoverFragment extends Fragment {
     }
 
     private void getAds() {
-
         APIService api = new APIService(new ApiCallback() {
             @Override
             public void receivedResponse(String responseString) {

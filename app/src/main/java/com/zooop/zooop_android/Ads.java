@@ -22,29 +22,17 @@ public class Ads {
     private String id;
     private double[] location;
 
-//    public void gotResponse(String responseString) {
-//
-//        JSONObject jsonObj = null;
-//        try {
-//            jsonObj = new JSONObject(responseString);
-//
-//            name = jsonObj.getString("name");
-//            description = jsonObj.getString("description");
-//            image = jsonObj.getString("image");
-//            id = jsonObj.getString("_id");
-//            location = doubleFromLocationArray(jsonObj.getJSONArray("location").toString());
-//
-//        } catch (JSONException e) {
-//            e.printStackTrace();
-//        }
-//    }
-
+    /** getters **/
     public String getName() {
         return this.name;
     }
 
     public String getDescription() {
         return this.description;
+    }
+
+    public double[] getLocation() {
+        return this.location;
     }
 
     public Ads(String name, String description, String image, String id, String location) {
@@ -55,7 +43,7 @@ public class Ads {
         this.location = doubleFromLocationArray(location);
     }
 
-    private double[] doubleFromLocationArray(String jsonStr) {
+    protected double[] doubleFromLocationArray(String jsonStr) {
         String cleanStr = jsonStr.replaceAll("[^\\d.,-]", "");
         String[] locationArray = cleanStr.split(",");
         double a = Double.parseDouble(locationArray[0]);

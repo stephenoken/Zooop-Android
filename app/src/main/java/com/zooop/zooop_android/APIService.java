@@ -6,9 +6,7 @@ package com.zooop.zooop_android;
 
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-
 import com.zooop.zooop_android.ui.ApiCallback;
-import com.zooop.zooop_android.ui.fragments.DiggyFragment;
 import org.json.JSONObject;
 import java.io.IOException;
 import okhttp3.Call;
@@ -73,7 +71,6 @@ public class APIService extends AppCompatActivity {
     }
 
     public void DiggyRequest(Request request) {
-
         client.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
@@ -90,7 +87,6 @@ public class APIService extends AppCompatActivity {
                 }
 
                 String responseBody = response.body().string();
-                Log.i("RESPONSE", responseBody );
                 callback.receivedResponse(responseBody);
             }
         });

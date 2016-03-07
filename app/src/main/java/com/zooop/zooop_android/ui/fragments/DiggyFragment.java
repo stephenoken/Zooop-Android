@@ -37,16 +37,9 @@ public class DiggyFragment extends Fragment {
     Screen screen = new Screen();
     LinearLayout chatLayer;
 
-    boolean ServiceIsBind = false;
-
     public DiggyFragment() {
         // Required empty public constructor
     }
-
-//    @Override
-//    public void receivedResponse(String responseString) {
-//            Log.i("--->", responseString);
-//    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -140,11 +133,9 @@ public class DiggyFragment extends Fragment {
     }
 
     private void submitInput(EditText inputField) {
-        // get input text
         String text = inputField.getText().toString();
-
-        // empty the input field
         inputField.setText("");
+
         // get a chat item and add it
         TextView textView = getMsgUser(text);
         addChatField(textView);
