@@ -1,11 +1,8 @@
 package com.zooop.zooop_android.ui.fragments;
 
-import android.content.ComponentName;
-import android.content.ServiceConnection;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.IBinder;
 import android.os.Looper;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -20,10 +17,10 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import com.zooop.zooop_android.APIService;
+import com.zooop.zooop_android.api.APIService;
 import com.zooop.zooop_android.R;
 import com.zooop.zooop_android.Screen;
-import com.zooop.zooop_android.ui.ApiCallback;
+import com.zooop.zooop_android.api.ApiCallback;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -155,19 +152,24 @@ public class DiggyFragment extends Fragment {
         APIService api = new APIService(new ApiCallback() {
             @Override
             public void receivedResponse(String responseString) {
-                JSONObject jsonObj = null;
-                try {
-                    jsonObj = new JSONObject(responseString);
-                    final TextView textView = getMsgDiggy(jsonObj.getString("name"));
+                if(!responseString.equals("?")) {
+                    JSONObject jsonObj = null;
+                    try {
+                        jsonObj = new JSONObject(responseString);
+                        final TextView textView = getMsgDiggy(jsonObj.getString("name"));
 
-                    Handler refresh = new Handler(Looper.getMainLooper());
-                    refresh.post(new Runnable() {
-                        public void run() {
-                            addChatField(textView);
-                        }
-                    });
-                } catch (JSONException e) {
-                    e.printStackTrace();
+                        Handler refresh = new Handler(Looper.getMainLooper());
+                        refresh.post(new Runnable() {
+                            public void run() {
+                                addChatField(textView);
+                            }
+                        });
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+                else {
+                    Log.i("API", "CAN NOT CALL API");
                 }
             }
         });

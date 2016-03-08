@@ -1,4 +1,4 @@
-package com.zooop.zooop_android.ui;
+package com.zooop.zooop_android.api;
 
 /**
  * Created by michael on 06/03/16.

@@ -4,7 +4,6 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.os.ResultReceiver;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.Gravity;
@@ -16,11 +15,11 @@ import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
-import com.zooop.zooop_android.APIService;
+import com.zooop.zooop_android.api.APIService;
 import com.zooop.zooop_android.Ads;
 import com.zooop.zooop_android.R;
 import com.zooop.zooop_android.Screen;
-import com.zooop.zooop_android.ui.ApiCallback;
+import com.zooop.zooop_android.api.ApiCallback;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -61,25 +60,31 @@ public class DiscoverFragment extends Fragment {
             @Override
             public void receivedResponse(String responseString) {
                 JSONObject jsonObj = null;
-                try {
-                    jsonObj = new JSONObject(responseString);
 
-                    String name = jsonObj.getString("name");
-                    String description = jsonObj.getString("description");
-                    String image = jsonObj.getString("image");
-                    String id = jsonObj.getString("_id");
-                    String location = jsonObj.getJSONArray("location").toString();
+                if(!responseString.equals("?")) {
+                    try {
+                        jsonObj = new JSONObject(responseString);
 
-                    final Ads ad = new Ads(name, description, image, id, location);
+                        String name = jsonObj.getString("name");
+                        String description = jsonObj.getString("description");
+                        String image = jsonObj.getString("image");
+                        String id = jsonObj.getString("_id");
+                        String location = jsonObj.getJSONArray("location").toString();
 
-                    Handler refresh = new Handler(Looper.getMainLooper());
-                    refresh.post(new Runnable() {
-                        public void run() {
-                            addAd(ad);
-                        }
-                    });
-                } catch (JSONException e) {
-                    e.printStackTrace();
+                        final Ads ad = new Ads(name, description, image, id, location);
+
+                        Handler refresh = new Handler(Looper.getMainLooper());
+                        refresh.post(new Runnable() {
+                            public void run() {
+                                addAd(ad);
+                            }
+                        });
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+                else {
+                    Log.i("API", "CAN NOT CALL API");
                 }
             }
         });
@@ -91,9 +96,10 @@ public class DiscoverFragment extends Fragment {
         textView.setText(ad.getName());
         adsLayer.addView(textView);
 
-        TextView textView2 = getAdView();
-        textView2.setText(ad.getDescription());
-        adsLayer.addView(textView2);
+
+//        TextView textView2 = getAdView();
+//        textView2.setText(ad.getDescription());
+//        adsLayer.addView(textView2);
 
         scrollToBottom();
     }

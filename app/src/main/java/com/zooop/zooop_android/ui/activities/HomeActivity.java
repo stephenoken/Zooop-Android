@@ -16,6 +16,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
 
@@ -75,10 +76,13 @@ public class HomeActivity extends AppCompatActivity {
 
                         if (position == map.index) {
                             setDiscoverMapsFragment();
+                            showKeyboard(false, view);
                         } else if (position == diggy.index) {
                             setDiggyFragment();
+                            showKeyboard(true, view);
                         } else if (position == discover.index) {
                             setDiscoverFragment();
+                            showKeyboard(false, view);
                         }
 
                         mDrawer.getActionBarDrawerToggle().setDrawerIndicatorEnabled(false);
@@ -114,6 +118,16 @@ public class HomeActivity extends AppCompatActivity {
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.content_frame,fragment).commit();
     }
+
+    private void showKeyboard(boolean show, View view) {
+        InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+        if(show) {
+            imm.toggleSoftInputFromWindow(view.getWindowToken(), InputMethodManager.SHOW_FORCED, 0);
+        } else {
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
+    }
+
 
     /******* classes: wrapper for menu items *******/
     private class PrimaryItem {

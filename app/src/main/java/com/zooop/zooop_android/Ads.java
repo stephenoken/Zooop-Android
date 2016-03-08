@@ -1,16 +1,5 @@
 package com.zooop.zooop_android;
 
-import android.app.Activity;
-import android.content.Context;
-import android.location.Location;
-import android.util.Log;
-
-import com.zooop.zooop_android.ui.ApiCallback;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 /**
  * Created by michael on 26/02/16.
  */

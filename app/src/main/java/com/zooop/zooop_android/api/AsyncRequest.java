@@ -1,4 +1,4 @@
-package com.zooop.zooop_android;
+package com.zooop.zooop_android.api;
 
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
