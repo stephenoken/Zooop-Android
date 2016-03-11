@@ -14,11 +14,11 @@
         android:fadingEdge="none" >
         <LinearLayout
             android:id="@+id/adsContainer"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp"
+            android:paddingTop="5dp"
+            android:paddingBottom="0dp"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="0dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical" >

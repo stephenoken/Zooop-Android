@@ -1,5 +1,6 @@
 package com.zooop.zooop_android;
 
+
 /**
  * Created by michael on 26/02/16.
  */
@@ -9,7 +10,8 @@ public class Ads {
     private String description;
     private String image;
     private String id;
-    private double[] location;
+    private double[] loc;
+    private LCoordinates location;
 
     /** getters **/
     public String getName() {
@@ -20,7 +22,11 @@ public class Ads {
         return this.description;
     }
 
-    public double[] getLocation() {
+    public String getImage() {
+        return this.image;
+    }
+
+    public LCoordinates getLocation() {
         return this.location;
     }
 
@@ -29,7 +35,9 @@ public class Ads {
         this.description = description;
         this.image = image;
         this.id = id;
-        this.location = doubleFromLocationArray(location);
+
+        double[] loc = doubleFromLocationArray(location);
+        this.location = new LCoordinates(loc[0], loc[1]);
     }
 
     protected double[] doubleFromLocationArray(String jsonStr) {

@@ -1,5 +1,6 @@
 package com.zooop.zooop_android.ui.fragments;
 
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
@@ -156,7 +157,7 @@ public class DiggyFragment extends Fragment {
                     JSONObject jsonObj = null;
                     try {
                         jsonObj = new JSONObject(responseString);
-                        final TextView textView = getMsgDiggy(jsonObj.getString("name"));
+                        final TextView textView = getMsgDiggy(jsonObj.getString("diggyResponse"));
 
                         Handler refresh = new Handler(Looper.getMainLooper());
                         refresh.post(new Runnable() {

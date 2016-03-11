@@ -1,5 +1,6 @@
 package com.zooop.zooop_android.ui.fragments;
 
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
@@ -10,6 +11,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
@@ -20,6 +22,7 @@ import com.zooop.zooop_android.Ads;
 import com.zooop.zooop_android.R;
 import com.zooop.zooop_android.Screen;
 import com.zooop.zooop_android.api.ApiCallback;
+import com.zooop.zooop_android.api.ImageCallback;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -50,7 +53,7 @@ public class DiscoverFragment extends Fragment {
 
         // get the chat layer
         adsLayer = (LinearLayout) scrollView.findViewById(R.id.adsContainer);
-        adsLayer.setBackgroundColor(getResources().getColor(R.color.primary));
+        adsLayer.setBackgroundColor(Color.WHITE);
 
         return view;
     }
@@ -77,6 +80,7 @@ public class DiscoverFragment extends Fragment {
                         refresh.post(new Runnable() {
                             public void run() {
                                 addAd(ad);
+                                addAd(ad);
                             }
                         });
                     } catch (JSONException e) {
@@ -92,20 +96,84 @@ public class DiscoverFragment extends Fragment {
     }
 
     public void addAd(Ads ad) {
-        TextView textView = getAdView();
-        textView.setText(ad.getName());
-        adsLayer.addView(textView);
+        View line = getSeparatorLine();
+        adsLayer.addView(line);
 
+        TextView TitleTxtView = getTitleTxtView(ad.getName());
+        adsLayer.addView(TitleTxtView);
 
-//        TextView textView2 = getAdView();
-//        textView2.setText(ad.getDescription());
-//        adsLayer.addView(textView2);
+        TextView textView2 = getDescriptionTxtView(ad.getDescription());
+        adsLayer.addView(textView2);
+
+        ImageView imageView = getImgView();
+        adsLayer.addView(imageView);
+        getImageFromURL(ad.getImage(), imageView);
 
         scrollToBottom();
     }
 
-    private TextView getAdView() {
-        TextView chatField = new TextView(getActivity());
+    private ImageView getImgView() {
+        ImageView imageView = new ImageView(getActivity());
+
+        int width = screen.getWidth(getActivity());
+
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams
+                (width, LinearLayout.LayoutParams.WRAP_CONTENT);
+
+        params.gravity = Gravity.LEFT;
+        params.bottomMargin = 10;
+
+        imageView.setLayoutParams(params);
+        imageView.setBackgroundColor(Color.WHITE);
+
+        return imageView;
+    }
+
+    public void getImageFromURL(String url, final ImageView imageView) {
+        APIService api = new APIService(new ImageCallback() {
+            @Override
+            public void receivedImage(Bitmap responseImage) {
+                final Bitmap image = responseImage;
+
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        imageView.setImageBitmap(image);
+                    }
+                });
+            }
+        });
+        api.downloadImage(url);
+    }
+
+    /**** ADSVIEW UI-ELEMENTS ****/
+    private View getSeparatorLine() {
+        View line = new View(getActivity());
+        line.setLayoutParams(new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                5
+        ));
+        line.setBackgroundColor(getResources().getColor(R.color.primary));
+
+        return line;
+    }
+
+    private TextView getTitleTxtView(String title) {
+        TextView titleTextView = getTxtView();
+        titleTextView.setTextSize(24);
+        titleTextView.setText(title);
+        return titleTextView;
+    }
+
+    private TextView getDescriptionTxtView(String description) {
+        TextView descrTextView = getTxtView();
+        descrTextView.setTextSize(16);
+        descrTextView.setText(description);
+        return descrTextView;
+    }
+
+    private TextView getTxtView() {
+        TextView txtView = new TextView(getActivity());
 
         int width = screen.getWidth(getActivity());
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams
@@ -113,18 +181,18 @@ public class DiscoverFragment extends Fragment {
 
         params.gravity = Gravity.TOP;
         params.bottomMargin = 20;
-        chatField.setLayoutParams(params);
-        chatField.setWidth((width / 3) * 2);
-        chatField.setMaxWidth((width / 3) * 2);
-        chatField.setTextSize((float) 18);
-        chatField.setPadding(20, 20, 20, 20);
+        txtView.setLayoutParams(params);
+        txtView.setWidth((width / 3) * 2);
+        txtView.setMaxWidth((width / 3) * 2);
+        txtView.setTextSize((float) 18);
+        txtView.setPadding(20, 20, 20, 20);
 
-        chatField.setTextColor(Color.BLACK);
-        chatField.setBackgroundColor(getResources().getColor(R.color.primary));
+        txtView.setTextColor(getResources().getColor(R.color.colorSecondary));
 
-        return chatField;
+        return txtView;
     }
 
+    /**** HELPER METHODS ****/
     private void scrollToBottom(){
         scrollView.post(new Runnable() {
             @Override

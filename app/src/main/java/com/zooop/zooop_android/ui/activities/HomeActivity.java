@@ -1,25 +1,17 @@
 package com.zooop.zooop_android.ui.activities;
 
-import android.Manifest;
-import android.app.ActionBar;
-import android.app.Activity;
 import android.content.Context;
-import android.content.pm.PackageManager;
-import android.location.Location;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.EditText;
-import android.widget.ImageButton;
-
 import com.mikepenz.materialdrawer.Drawer;
 import com.mikepenz.materialdrawer.DrawerBuilder;
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
@@ -27,16 +19,35 @@ import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 import com.zooop.zooop_android.LocationService;
 import com.zooop.zooop_android.R;
+import com.zooop.zooop_android.api.APIService;
+import com.zooop.zooop_android.api.ImageCallback;
 import com.zooop.zooop_android.ui.fragments.DiggyFragment;
 import com.zooop.zooop_android.ui.fragments.DiscoverFragment;
 import com.zooop.zooop_android.ui.fragments.DiscoverMapFragment;
 
 public class HomeActivity extends AppCompatActivity {
-
     private Drawer mDrawer;
+
+    private void getImageFromURL(String url) {
+        APIService api = new APIService(new ImageCallback() {
+
+            @Override
+            public void receivedImage(Bitmap responseImage) {
+                Bitmap image = responseImage;
+
+                System.out.println(">>>>>>>>>");
+                System.out.println(image);
+            }
+        });
+        api.downloadImage(url);
+    }
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
+//        System.out.println("DOWNLOAD IMAGE FROM URL");
+//        getImageFromURL("http://www.imgjunk.com/wp-content/uploads/2015/08/Charming-Daisy-Ridley.jpg");
 
         Fragment menu = new MenuFragment();
         changeFragment(menu);
@@ -128,7 +139,6 @@ public class HomeActivity extends AppCompatActivity {
         }
     }
 
-
     /******* classes: wrapper for menu items *******/
     private class PrimaryItem {
         String name;
@@ -153,13 +163,4 @@ public class HomeActivity extends AppCompatActivity {
             this.drawerItem = new SecondaryDrawerItem().withName(name);
         }
     }
-
-    private Fragment getActiveFragment() {
-        if (getSupportFragmentManager().getBackStackEntryCount() == 0) {
-            return null;
-        }
-        String tag = getSupportFragmentManager().getBackStackEntryAt(getSupportFragmentManager().getBackStackEntryCount() - 1).getName();
-        return getSupportFragmentManager().findFragmentByTag(tag);
-    }
-
 }

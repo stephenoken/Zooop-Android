@@ -5,6 +5,6 @@ import android.graphics.Bitmap;
 /**
  * Created by michael on 06/03/16.
  */
-public interface ApiCallback {
-    void receivedResponse(String responseString);
+public interface ImageCallback {
+    void receivedImage(Bitmap responseImage);
 }

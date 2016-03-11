@@ -17,13 +17,12 @@ public class AdsTest extends TestCase {
         double lon = -6.266155;
         String location = "[\"" + lat +"\", \"" + lon + "\"]";
 
-
         Ads testAd = new Ads(name, description, image, id, location);
 
         // tests
         assertEquals(testAd.getName(), name);
         assertEquals(testAd.getDescription(), description);
-        assertEquals(testAd.getLocation()[0], lat);
-        assertEquals(testAd.getLocation()[1], lon);
+        assertEquals(testAd.getLocation().getLatitude(), lat);
+        assertEquals(testAd.getLocation().getLongitude(), lon);
     }
 }
