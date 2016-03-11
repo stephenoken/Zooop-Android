@@ -40,7 +40,7 @@ public class Ads {
         this.location = new LCoordinates(loc[0], loc[1]);
     }
 
-    protected double[] doubleFromLocationArray(String jsonStr) {
+    private double[] doubleFromLocationArray(String jsonStr) {
         String cleanStr = jsonStr.replaceAll("[^\\d.,-]", "");
         String[] locationArray = cleanStr.split(",");
         double a = Double.parseDouble(locationArray[0]);

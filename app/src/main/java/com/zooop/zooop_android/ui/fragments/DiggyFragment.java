@@ -1,6 +1,5 @@
 package com.zooop.zooop_android.ui.fragments;
 
-import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;

@@ -114,8 +114,6 @@ public class APIService extends AppCompatActivity {
     }
 
     public void downloadImage(String url) {
-        System.out.print("ALRIGHTY!!!");
-
         AsyncRequest asynchronousGet = new AsyncRequest();
 
         try {
@@ -125,7 +123,6 @@ public class APIService extends AppCompatActivity {
             e.printStackTrace();
         }
     }
-
 
     private JSONObject getParamsJSON(String[] keys, String[] values) {
         int numberOfParameters = keys.length;

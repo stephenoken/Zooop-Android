@@ -28,26 +28,8 @@ import com.zooop.zooop_android.ui.fragments.DiscoverMapFragment;
 public class HomeActivity extends AppCompatActivity {
     private Drawer mDrawer;
 
-    private void getImageFromURL(String url) {
-        APIService api = new APIService(new ImageCallback() {
-
-            @Override
-            public void receivedImage(Bitmap responseImage) {
-                Bitmap image = responseImage;
-
-                System.out.println(">>>>>>>>>");
-                System.out.println(image);
-            }
-        });
-        api.downloadImage(url);
-    }
-
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
-//        System.out.println("DOWNLOAD IMAGE FROM URL");
-//        getImageFromURL("http://www.imgjunk.com/wp-content/uploads/2015/08/Charming-Daisy-Ridley.jpg");
 
         Fragment menu = new MenuFragment();
         changeFragment(menu);
