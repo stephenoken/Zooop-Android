@@ -1,11 +1,5 @@
 package com.zooop.zooop_android;
 
-import android.location.Location;
-import android.util.Log;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 /**
  * Created by michael on 26/02/16.
@@ -16,25 +10,34 @@ public class Ads {
     private String description;
     private String image;
     private String id;
-    private double[] location;
+    private double[] loc;
+    private LCoordinates location;
 
-    public void gotResponse(String responseString) {
+    /** getters **/
+    public String getName() {
+        return this.name;
+    }
 
-        JSONObject jsonObj = null;
-        try {
-            jsonObj = new JSONObject(responseString);
+    public String getDescription() {
+        return this.description;
+    }
 
-            name = jsonObj.getString("name");
-            description = jsonObj.getString("description");
-            image = jsonObj.getString("image");
-            id = jsonObj.getString("_id");
-            location = doubleFromLocationArray(jsonObj.getJSONArray("location").toString());
+    public String getImage() {
+        return this.image;
+    }
 
-            Log.i("FUCK", name + "|" + description+ "|" + image+ "|" + id + "|" + location[0] + "|" + location[1]);
+    public LCoordinates getLocation() {
+        return this.location;
+    }
 
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+    public Ads(String name, String description, String image, String id, String location) {
+        this.name = name;
+        this.description = description;
+        this.image = image;
+        this.id = id;
+
+        double[] loc = doubleFromLocationArray(location);
+        this.location = new LCoordinates(loc[0], loc[1]);
     }
 
     private double[] doubleFromLocationArray(String jsonStr) {
@@ -44,10 +47,5 @@ public class Ads {
         double b = Double.parseDouble(locationArray[1]);
         double[] dArray = new double []{a,b};
         return dArray;
-    }
-
-    public void fetchData() {
-        API api = new API();
-        api.fetchAds(this);
     }
 }

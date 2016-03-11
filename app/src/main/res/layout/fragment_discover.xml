@@ -2,25 +2,24 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#affe00"
     tools:context="com.zooop.zooop_android.ui.fragments.DiscoverFragment">
-
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:id="@+id/scrollView"
+        android:layout_height="match_parent"
+        android:id="@+id/adsScrollView"
         android:paddingTop="?android:attr/actionBarSize"
-        android:background="#affe00"
+        android:background="#d3d3d3"
         android:layout_alignParentTop="true"
         android:fadingEdge="none" >
         <LinearLayout
-            android:id="@+id/container"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp"
+            android:id="@+id/adsContainer"
+            android:paddingTop="5dp"
+            android:paddingBottom="0dp"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
-            android:layout_width="fill_parent"
+            android:layout_marginTop="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical" >
         </LinearLayout>

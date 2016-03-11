@@ -1,24 +1,17 @@
 package com.zooop.zooop_android.ui.activities;
 
-import android.Manifest;
-import android.app.ActionBar;
-import android.app.Activity;
 import android.content.Context;
-import android.content.pm.PackageManager;
-import android.location.Location;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.EditText;
-import android.widget.ImageButton;
-
+import android.view.inputmethod.InputMethodManager;
 import com.mikepenz.materialdrawer.Drawer;
 import com.mikepenz.materialdrawer.DrawerBuilder;
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
@@ -26,12 +19,13 @@ import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 import com.zooop.zooop_android.LocationService;
 import com.zooop.zooop_android.R;
+import com.zooop.zooop_android.api.APIService;
+import com.zooop.zooop_android.api.ImageCallback;
 import com.zooop.zooop_android.ui.fragments.DiggyFragment;
 import com.zooop.zooop_android.ui.fragments.DiscoverFragment;
 import com.zooop.zooop_android.ui.fragments.DiscoverMapFragment;
 
 public class HomeActivity extends AppCompatActivity {
-
     private Drawer mDrawer;
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,10 +69,13 @@ public class HomeActivity extends AppCompatActivity {
 
                         if (position == map.index) {
                             setDiscoverMapsFragment();
+                            showKeyboard(false, view);
                         } else if (position == diggy.index) {
                             setDiggyFragment();
+                            showKeyboard(true, view);
                         } else if (position == discover.index) {
                             setDiscoverFragment();
+                            showKeyboard(false, view);
                         }
 
                         mDrawer.getActionBarDrawerToggle().setDrawerIndicatorEnabled(false);
@@ -115,6 +112,15 @@ public class HomeActivity extends AppCompatActivity {
         fragmentManager.beginTransaction().replace(R.id.content_frame,fragment).commit();
     }
 
+    private void showKeyboard(boolean show, View view) {
+        InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+        if(show) {
+            imm.toggleSoftInputFromWindow(view.getWindowToken(), InputMethodManager.SHOW_FORCED, 0);
+        } else {
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
+    }
+
     /******* classes: wrapper for menu items *******/
     private class PrimaryItem {
         String name;
@@ -139,13 +145,4 @@ public class HomeActivity extends AppCompatActivity {
             this.drawerItem = new SecondaryDrawerItem().withName(name);
         }
     }
-
-    private Fragment getActiveFragment() {
-        if (getSupportFragmentManager().getBackStackEntryCount() == 0) {
-            return null;
-        }
-        String tag = getSupportFragmentManager().getBackStackEntryAt(getSupportFragmentManager().getBackStackEntryCount() - 1).getName();
-        return getSupportFragmentManager().findFragmentByTag(tag);
-    }
-
 }

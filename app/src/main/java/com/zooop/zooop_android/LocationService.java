@@ -34,8 +34,6 @@ public class LocationService extends Service implements LocationListener {
     public LocationService(Activity activity) {
         this.context = (Context) activity;
         this.activity = activity;
-
-        //getLocation();
     }
 
     public double[] getLocation() {
@@ -97,24 +95,16 @@ public class LocationService extends Service implements LocationListener {
 
 
     @Override
-    public void onLocationChanged(Location location) {
-
-    }
+    public void onLocationChanged(Location location) {}
 
     @Override
-    public void onStatusChanged(String provider, int status, Bundle extras) {
-
-    }
+    public void onStatusChanged(String provider, int status, Bundle extras) {}
 
     @Override
-    public void onProviderEnabled(String provider) {
-
-    }
+    public void onProviderEnabled(String provider) {}
 
     @Override
-    public void onProviderDisabled(String provider) {
-
-    }
+    public void onProviderDisabled(String provider) {}
 
     @Nullable
     @Override
@@ -146,11 +136,6 @@ public class LocationService extends Service implements LocationListener {
     }
 
     public boolean locationPermissions() {
-        if(fineLocationPermitted() &&  coarseLocationPermitted()) {
-            return true;
-        }
-        else {
-            return false;
-        }
+        return fineLocationPermitted() && coarseLocationPermitted();
     }
 }
