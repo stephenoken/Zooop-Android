@@ -1,14 +1,10 @@
 package com.zooop.zooop_android.ui.fragments;
 
-import android.app.ActionBar;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
-import android.widget.ImageButton;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -16,12 +12,13 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.zooop.zooop_android.DiscoverAds;
 import com.zooop.zooop_android.LocationService;
 import com.zooop.zooop_android.R;
-import com.zooop.zooop_android.ui.activities.HomeActivity;
 
 public class DiscoverMapFragment extends Fragment implements OnMapReadyCallback {
 
+    private static int ZOOMLEVEL = 13;
     private GoogleMap mMap;
     LocationService locationService;
 
@@ -36,6 +33,10 @@ public class DiscoverMapFragment extends Fragment implements OnMapReadyCallback 
         return view;
     }
 
+    private void addPin(LatLng location, String title) {
+        mMap.addMarker(new MarkerOptions().position(location).title(title));
+    }
+
     public void onMapReady(GoogleMap googleMap) throws SecurityException{
         mMap = googleMap;
 
@@ -43,13 +44,15 @@ public class DiscoverMapFragment extends Fragment implements OnMapReadyCallback 
         double latit = currentLocation[0];
         double longi = currentLocation[1];
 
-        // Add a marker in Sydney and move the camera
-        LatLng userLocation = new LatLng(latit, longi);
-        mMap.addMarker(new MarkerOptions().position(userLocation).title("That's you, dude \uD83D\uDE0E"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(userLocation));
 
-        //Zooop map settings
+        for(DiscoverAds ad : DiscoverAds.ads) {
+            LatLng location = new LatLng(ad.getShopLocation().getLatitude(), ad.getShopLocation().getLongitude());
+            addPin(location, ad.getShopName());
+        }
+
+        LatLng userLocation = new LatLng(latit, longi);
+
         mMap.setMyLocationEnabled(true);
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation, 13));
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation, ZOOMLEVEL));
     }
 }

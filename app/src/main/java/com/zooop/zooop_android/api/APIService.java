@@ -55,8 +55,6 @@ public class APIService extends AppCompatActivity {
                 }
 
                 String responseBody = response.body().string();
-                System.out.println(responseBody);
-
                 callback.receivedResponse(responseBody);
             }
         });
@@ -90,7 +88,7 @@ public class APIService extends AppCompatActivity {
         AsyncRequest asynchronousGet = new AsyncRequest();
 
         try {
-            Request request =  asynchronousGet.apiRequest("getAd", "");
+            Request request =  asynchronousGet.apiRequest("/get-discover-ads", "");
             ApiRequest(request);
         } catch (Exception e) {
             e.printStackTrace();

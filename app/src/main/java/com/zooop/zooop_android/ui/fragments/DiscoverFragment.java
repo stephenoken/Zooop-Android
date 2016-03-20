@@ -7,23 +7,22 @@ import android.os.Handler;
 import android.os.Looper;
 import android.support.v4.app.Fragment;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
-
+import com.zooop.zooop_android.DiscoverAds;
 import com.zooop.zooop_android.api.APIService;
-import com.zooop.zooop_android.Ads;
 import com.zooop.zooop_android.R;
 import com.zooop.zooop_android.Screen;
 import com.zooop.zooop_android.api.ApiCallback;
 import com.zooop.zooop_android.api.ImageCallback;
-
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -32,6 +31,7 @@ public class DiscoverFragment extends Fragment {
     ScrollView scrollView;
     Screen screen = new Screen();
     LinearLayout adsLayer;
+    View view;
 
     public DiscoverFragment() {
         // Required empty public constructor
@@ -44,7 +44,7 @@ public class DiscoverFragment extends Fragment {
         getAds();
 
         // get this current view
-        View view = inflater.inflate(R.layout.fragment_discover, container, false);
+        view = inflater.inflate(R.layout.fragment_discover, container, false);
 
         // get and setup scrollview
         scrollView = (ScrollView) view.findViewById(R.id.adsScrollView);
@@ -62,27 +62,46 @@ public class DiscoverFragment extends Fragment {
         APIService api = new APIService(new ApiCallback() {
             @Override
             public void receivedResponse(String responseString) {
-                JSONObject jsonObj = null;
+                JSONArray jsonArray = null;
 
                 if(!responseString.equals("?")) {
                     try {
-                        jsonObj = new JSONObject(responseString);
+                        jsonArray = new JSONArray(responseString);
 
-                        String name = jsonObj.getString("name");
-                        String description = jsonObj.getString("description");
-                        String image = jsonObj.getString("image");
-                        String id = jsonObj.getString("_id");
-                        String location = jsonObj.getJSONArray("location").toString();
+                        for(int i = 0; i < jsonArray.length(); i++) {
+                            JSONObject jsonObj = jsonArray.getJSONObject(i);
+                            JSONObject adInfo = jsonObj.getJSONObject("adInfo");
 
-                        final Ads ad = new Ads(name, description, image, id, location);
+                            String adId = adInfo.getString("_id");
+                            String adCreatedAt = adInfo.getString("createdAt");
+                            String adName = adInfo.getString("name");
+                            String adDescription = adInfo.getString("description");
+                            String[] adTags = splitToStringArray(adInfo.getJSONArray("tags").toString());
 
-                        Handler refresh = new Handler(Looper.getMainLooper());
-                        refresh.post(new Runnable() {
-                            public void run() {
-                                addAd(ad);
-                                addAd(ad);
+                            String adImageUrl;
+                            try {
+                                adImageUrl = adInfo.getString("imageUrl");
                             }
-                        });
+                            catch(Exception e) {
+                                adImageUrl = "";
+                            }
+
+                            JSONObject shopInfo = jsonObj.getJSONObject("shopInfo");
+
+                            String shopName = shopInfo.getString("name");
+                            String[] shopCoordinates = splitToStringArray(shopInfo.getString("location"));
+
+                            final DiscoverAds ad = new DiscoverAds(adId, adName, adDescription, adImageUrl, adTags, adCreatedAt , shopName, shopCoordinates);
+
+                            Handler refresh = new Handler(Looper.getMainLooper());
+                            refresh.post(new Runnable() {
+                                public void run() {
+                                    addAd(ad);
+                                    DiscoverAds.ads.add(ad);
+                                }
+                            });
+                        }
+
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -95,41 +114,71 @@ public class DiscoverFragment extends Fragment {
         api.fetchAds();
     }
 
-    public void addAd(Ads ad) {
-        View line = getSeparatorLine();
-        adsLayer.addView(line);
+    public void addAd(DiscoverAds ad) {
+        RelativeLayout adLayout = new RelativeLayout(getActivity());
+        adLayout.setBackgroundColor(Color.WHITE);
 
-        TextView TitleTxtView = getTitleTxtView(ad.getName());
-        adsLayer.addView(TitleTxtView);
+        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams
+                (RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
 
-        TextView textView2 = getDescriptionTxtView(ad.getDescription());
-        adsLayer.addView(textView2);
+        params.addRule(RelativeLayout.ALIGN_PARENT_TOP);
+        adLayout.setLayoutParams(params);
+        adsLayer.addView(adLayout);
 
         ImageView imageView = getImgView();
-        adsLayer.addView(imageView);
-        getImageFromURL(ad.getImage(), imageView);
+        adLayout.addView(imageView);
+
+        ProgressBar progressBar = new ProgressBar(getActivity(), null, android.R.attr.progressBarStyleSmall);
+        RelativeLayout.LayoutParams parameters = new RelativeLayout.LayoutParams(100,100);
+        parameters.addRule(RelativeLayout.CENTER_IN_PARENT);
+        adLayout.addView(progressBar, parameters);
+
+
+        if(ad.getImage() != "") {
+            getImageFromURL(ad.getImage(), imageView, progressBar);
+        }
+        else {
+            adLayout.removeView(progressBar);
+        }
+
+        View headerLine = getheaderLine();
+        adLayout.addView(headerLine);
+
+        TextView TitleTxtView = getTitleTxtView(ad.getName());
+        adLayout.addView(TitleTxtView);
+
+        TextView textView2 = getDescriptionTxtView(ad.getDescription());
+        adLayout.addView(textView2);
 
         scrollToBottom();
+    }
+
+    private String[] splitToStringArray(String arrayStr) {
+        String cleanStr = arrayStr.replaceAll("[^\\d.,-]", "");
+        String[] strArray = cleanStr.split(",");
+
+        return strArray;
     }
 
     private ImageView getImgView() {
         ImageView imageView = new ImageView(getActivity());
 
-        int width = screen.getWidth(getActivity());
+        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams
+                (RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
 
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams
-                (width, LinearLayout.LayoutParams.WRAP_CONTENT);
+        params.bottomMargin = 40;
 
-        params.gravity = Gravity.LEFT;
-        params.bottomMargin = 10;
-
+        imageView.setAdjustViewBounds(true);
         imageView.setLayoutParams(params);
         imageView.setBackgroundColor(Color.WHITE);
+        imageView.setImageResource(R.drawable.fallback_img);
+        
+        imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
 
         return imageView;
     }
 
-    public void getImageFromURL(String url, final ImageView imageView) {
+    public void getImageFromURL(String url, final ImageView imageView, final ProgressBar progessbar) {
         APIService api = new APIService(new ImageCallback() {
             @Override
             public void receivedImage(Bitmap responseImage) {
@@ -139,6 +188,7 @@ public class DiscoverFragment extends Fragment {
                     @Override
                     public void run() {
                         imageView.setImageBitmap(image);
+                        ((ViewGroup) progessbar.getParent()).removeView(progessbar);
                     }
                 });
             }
@@ -147,13 +197,17 @@ public class DiscoverFragment extends Fragment {
     }
 
     /**** ADSVIEW UI-ELEMENTS ****/
-    private View getSeparatorLine() {
+    private View getheaderLine() {
         View line = new View(getActivity());
-        line.setLayoutParams(new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                5
-        ));
-        line.setBackgroundColor(getResources().getColor(R.color.primary));
+
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams
+                (RelativeLayout.LayoutParams.MATCH_PARENT, 150);
+
+        line.setLayoutParams(params);
+
+        line.setY(30);
+        line.setBackgroundColor(Color.WHITE);
+        line.getBackground().setAlpha(128);
 
         return line;
     }
@@ -162,6 +216,7 @@ public class DiscoverFragment extends Fragment {
         TextView titleTextView = getTxtView();
         titleTextView.setTextSize(24);
         titleTextView.setText(title);
+        titleTextView.setY(0);
         return titleTextView;
     }
 
@@ -169,6 +224,7 @@ public class DiscoverFragment extends Fragment {
         TextView descrTextView = getTxtView();
         descrTextView.setTextSize(16);
         descrTextView.setText(description);
+        descrTextView.setY(60);
         return descrTextView;
     }
 
@@ -176,10 +232,13 @@ public class DiscoverFragment extends Fragment {
         TextView txtView = new TextView(getActivity());
 
         int width = screen.getWidth(getActivity());
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams
-                (LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams
+                (RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
 
-        params.gravity = Gravity.TOP;
+        params.addRule(RelativeLayout.ALIGN_PARENT_TOP);
+        params.addRule(RelativeLayout.CENTER_HORIZONTAL);
+
+        //params.gravity = Gravity.TOP;
         params.bottomMargin = 20;
         txtView.setLayoutParams(params);
         txtView.setWidth((width / 3) * 2);

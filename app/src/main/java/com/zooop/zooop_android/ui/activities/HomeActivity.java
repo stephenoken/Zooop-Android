@@ -1,14 +1,11 @@
 package com.zooop.zooop_android.ui.activities;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -19,8 +16,6 @@ import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 import com.zooop.zooop_android.LocationService;
 import com.zooop.zooop_android.R;
-import com.zooop.zooop_android.api.APIService;
-import com.zooop.zooop_android.api.ImageCallback;
 import com.zooop.zooop_android.ui.fragments.DiggyFragment;
 import com.zooop.zooop_android.ui.fragments.DiscoverFragment;
 import com.zooop.zooop_android.ui.fragments.DiscoverMapFragment;
@@ -43,7 +38,8 @@ public class HomeActivity extends AppCompatActivity {
         }
 
         // set map as initial fragment
-        setDiscoverMapsFragment();
+        //setDiscoverMapsFragment();
+        setDiscoverFragment();
 
         // create menu items
         final PrimaryItem map = new PrimaryItem("Map", 0);
