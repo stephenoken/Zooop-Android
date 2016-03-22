@@ -1,8 +1,5 @@
 package com.zooop.zooop_android;
 
-
-import org.json.JSONArray;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -15,7 +12,6 @@ import java.util.regex.Pattern;
  * Created by michael on 26/02/16.
  */
 public class DiscoverAds {
-
     public static final ArrayList<DiscoverAds> ads = new ArrayList<DiscoverAds>();
     private String id;
     private String name;
@@ -23,9 +19,7 @@ public class DiscoverAds {
     private String image;
     private String[] tags;
     private String shopName;
-
     private Date createdAt;
-
     private double[] loc;
     private LCoordinates shopLocation;
 
@@ -34,35 +28,27 @@ public class DiscoverAds {
     public String getId() {
         return this.id;
     }
-
     public String getName() {
         return this.name;
     }
-
     public String getDescription() {
         return this.description;
     }
-
     public String getImage() {
         return this.image;
     }
-
     public Date getCreatedAt() {
         return this.createdAt;
     }
-
     public String[] getTags() {
         return this.tags;
     }
-
     public String getShopName() {
         return this.shopName;
     }
-
     public double[] getLoc() {
         return loc;
     }
-
     public LCoordinates getShopLocation() {
         return this.shopLocation;
     }
@@ -75,8 +61,8 @@ public class DiscoverAds {
         this.image = adImage;
         this.tags = adTags;
         this.shopName = shopName;
-
         this.createdAt = dateFromDateString(adCreatedAt);
+
         double[] loc = doubleFromLocationArray(shopLocation);
         this.shopLocation = new LCoordinates(loc[0], loc[1]);
     }
@@ -99,7 +85,7 @@ public class DiscoverAds {
         }
     }
 
-    public String removeTimeZomeFromTimeString(String dateString) {
+    protected String removeTimeZomeFromTimeString(String dateString) {
         String resultDateString = "";
 
         Pattern pattern = Pattern.compile("((.*?)T(.*?))\\.");
@@ -114,12 +100,11 @@ public class DiscoverAds {
         return resultDateString;
     }
 
-    private double[] doubleFromLocationArray(String[] locStr) {
-
+    protected double[] doubleFromLocationArray(String[] locStr) {
         double a = Double.parseDouble(locStr[0]);
         double b = Double.parseDouble(locStr[1]);
         double[] dArray = new double []{a,b};
+
         return dArray;
     }
-
 }
