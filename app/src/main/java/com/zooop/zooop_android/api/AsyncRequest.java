@@ -10,7 +10,9 @@ public final class AsyncRequest {
 
     public Request apiRequest(String apiCall, String bodyString) throws Exception {
         RequestBody requestBody = RequestBody.create(JSON, bodyString);
-        String urlString = BASEURL + apiCall;
+        //String urlString = BASEURL + apiCall;
+
+        String urlString = "http://10.6.48.207:3000/adverts-api/get-android-ads";
 
         Request request = new Request.Builder()
                 .url(urlString)
