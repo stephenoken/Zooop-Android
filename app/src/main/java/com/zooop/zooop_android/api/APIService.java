@@ -88,7 +88,7 @@ public class APIService extends AppCompatActivity {
         AsyncRequest asynchronousGet = new AsyncRequest();
 
         try {
-            Request request =  asynchronousGet.apiRequest("/get-discover-ads", "");
+            Request request =  asynchronousGet.apiRequest("adverts-api/get-android-ads", "");
             ApiRequest(request);
         } catch (Exception e) {
             e.printStackTrace();
@@ -104,7 +104,7 @@ public class APIService extends AppCompatActivity {
         String requestBody = getParamsJSON(keys,values).toString();
 
         try {
-            Request request =  asynchronousGet.apiRequest("messageDiggy", requestBody);
+            Request request =  asynchronousGet.apiRequest("api/messageDiggy", requestBody);
             ApiRequest(request);
         } catch (Exception e) {
             e.printStackTrace();

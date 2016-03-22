@@ -6,13 +6,11 @@ import okhttp3.RequestBody;
 
 public final class AsyncRequest {
     private static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
-    private final static String BASEURL = "http://www.zooop.xyz/api/";
+    private final static String BASEURL = "http://www.zooop.xyz/";
 
     public Request apiRequest(String apiCall, String bodyString) throws Exception {
         RequestBody requestBody = RequestBody.create(JSON, bodyString);
-        //String urlString = BASEURL + apiCall;
-
-        String urlString = "http://10.6.48.207:3000/adverts-api/get-android-ads";
+        String urlString = BASEURL + apiCall;
 
         Request request = new Request.Builder()
                 .url(urlString)

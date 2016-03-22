@@ -76,7 +76,7 @@ public class DiscoverFragment extends Fragment {
                             String adCreatedAt = adInfo.getString("createdAt");
                             String adName = adInfo.getString("name");
                             String adDescription = adInfo.getString("description");
-                            String[] adTags = splitToStringArray(adInfo.getJSONArray("tags").toString());
+                            String[] adTags = splitToStringArray(adInfo.getString("tags").toString());
 
                             String adImageUrl;
                             try {
@@ -153,7 +153,7 @@ public class DiscoverFragment extends Fragment {
         scrollToBottom();
     }
 
-    private String[] splitToStringArray(String arrayStr) {
+    public String[] splitToStringArray(String arrayStr) {
         String cleanStr = arrayStr.replaceAll("[^\\d.,-]", "");
         String[] strArray = cleanStr.split(",");
 
