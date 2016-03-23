@@ -23,7 +23,6 @@ public class DiscoverAds {
     private double[] loc;
     private LCoordinates shopLocation;
 
-
     /** getters **/
     public String getId() {
         return this.id;

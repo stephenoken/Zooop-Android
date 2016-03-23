@@ -7,9 +7,11 @@ import android.os.Handler;
 import android.os.Looper;
 import android.support.v4.app.Fragment;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -114,8 +116,8 @@ public class DiscoverFragment extends Fragment {
         api.fetchAds();
     }
 
-    public void addAd(DiscoverAds ad) {
-        RelativeLayout adLayout = new RelativeLayout(getActivity());
+    public void addAd(final DiscoverAds ad) {
+        final RelativeLayout adLayout = new RelativeLayout(getActivity());
         adLayout.setBackgroundColor(Color.WHITE);
 
         RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams
@@ -131,6 +133,7 @@ public class DiscoverFragment extends Fragment {
         ProgressBar progressBar = new ProgressBar(getActivity(), null, android.R.attr.progressBarStyleSmall);
         RelativeLayout.LayoutParams parameters = new RelativeLayout.LayoutParams(100,100);
         parameters.addRule(RelativeLayout.CENTER_IN_PARENT);
+        parameters.addRule(RelativeLayout.ALIGN_PARENT_TOP, RelativeLayout.TRUE);
         adLayout.addView(progressBar, parameters);
 
 
@@ -141,16 +144,43 @@ public class DiscoverFragment extends Fragment {
             adLayout.removeView(progressBar);
         }
 
-        View headerLine = getheaderLine();
+        final TextView descriptonTxt = getDescripLayout();
+        descriptonTxt.setVisibility(View.INVISIBLE);
+        adLayout.addView(descriptonTxt);
+
+        descriptonTxt.setText(ad.getDescription());
+
+        final LinearLayout headerLine = getHeaderLayout();
         adLayout.addView(headerLine);
 
         TextView TitleTxtView = getTitleTxtView(ad.getName());
-        adLayout.addView(TitleTxtView);
+        headerLine.addView(TitleTxtView);
 
-        TextView textView2 = getDescriptionTxtView(ad.getDescription());
-        adLayout.addView(textView2);
+        final Button btn1 = new Button(getActivity());
+        params.width = 100;
+        params.height = 100;
+        btn1.setLayoutParams(params);
+        btn1.setBackgroundResource(R.drawable.show);
+        btn1.setAlpha(0.5f);
+        headerLine.addView(btn1);
 
-        scrollToBottom();
+        btn1.setOnClickListener(new View.OnClickListener() {
+            boolean detailsShown = false;
+
+            @Override
+            public void onClick(View v) {
+                if(!detailsShown) {
+                    btn1.setBackgroundResource(R.drawable.hide);
+                    descriptonTxt.setVisibility(View.VISIBLE);
+                    detailsShown = true;
+                }
+                else {
+                    btn1.setBackgroundResource(R.drawable.show);
+                    descriptonTxt.setVisibility(View.INVISIBLE);
+                    detailsShown = false;
+                }
+            }
+        });
     }
 
     public String[] splitToStringArray(String arrayStr) {
@@ -197,67 +227,70 @@ public class DiscoverFragment extends Fragment {
     }
 
     /**** ADSVIEW UI-ELEMENTS ****/
-    private View getheaderLine() {
-        View line = new View(getActivity());
+    private LinearLayout getHeaderLayout() {
+        final LinearLayout headerLine = new LinearLayout(getActivity());
 
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams
-                (RelativeLayout.LayoutParams.MATCH_PARENT, 150);
+        LinearLayout.LayoutParams hlParams = new LinearLayout.LayoutParams
+                (LinearLayout.LayoutParams.MATCH_PARENT, 120);
 
-        line.setLayoutParams(params);
+        headerLine.setLayoutParams(hlParams);
+        headerLine.setBackgroundColor(Color.WHITE);
+        headerLine.setY(30);
+        headerLine.getBackground().setAlpha(200);
+        headerLine.setOrientation(LinearLayout.HORIZONTAL);
 
-        line.setY(30);
-        line.setBackgroundColor(Color.WHITE);
-        line.getBackground().setAlpha(128);
-
-        return line;
+        return headerLine;
     }
 
-    private TextView getTitleTxtView(String title) {
-        TextView titleTextView = getTxtView();
-        titleTextView.setTextSize(24);
-        titleTextView.setText(title);
-        titleTextView.setY(0);
-        return titleTextView;
-    }
-
-    private TextView getDescriptionTxtView(String description) {
-        TextView descrTextView = getTxtView();
-        descrTextView.setTextSize(16);
-        descrTextView.setText(description);
-        descrTextView.setY(60);
-        return descrTextView;
-    }
-
-    private TextView getTxtView() {
+    private TextView getDescripLayout() {
         TextView txtView = new TextView(getActivity());
 
-        int width = screen.getWidth(getActivity());
+        int width = 2*(screen.getWidth(getActivity()))/3;
         RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams
                 (RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
 
         params.addRule(RelativeLayout.ALIGN_PARENT_TOP);
         params.addRule(RelativeLayout.CENTER_HORIZONTAL);
 
-        //params.gravity = Gravity.TOP;
-        params.bottomMargin = 20;
         txtView.setLayoutParams(params);
-        txtView.setWidth((width / 3) * 2);
-        txtView.setMaxWidth((width / 3) * 2);
+        txtView.setWidth(width);
+        txtView.setMaxWidth(width);
         txtView.setTextSize((float) 18);
-        txtView.setPadding(20, 20, 20, 20);
+        txtView.setY(30);
+        txtView.setPadding(20, 140, 20, 20);
+        txtView.setBackgroundColor(Color.WHITE);
+        txtView.getBackground().setAlpha(128);
 
         txtView.setTextColor(getResources().getColor(R.color.colorSecondary));
 
         return txtView;
     }
 
-    /**** HELPER METHODS ****/
-    private void scrollToBottom(){
-        scrollView.post(new Runnable() {
-            @Override
-            public void run() {
-                scrollView.fullScroll(ScrollView.FOCUS_DOWN);
-            }
-        });
+    private TextView getTitleTxtView(String title) {
+        TextView titleTextView = getTxtView();
+        titleTextView.setTextSize(24);
+        titleTextView.setText(title);
+        return titleTextView;
+    }
+
+    private TextView getTxtView() {
+        TextView txtView = new TextView(getActivity());
+
+        int width = 2*(screen.getWidth(getActivity()))/3;
+        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams
+                (RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+
+        params.addRule(RelativeLayout.ALIGN_PARENT_TOP);
+        params.addRule(RelativeLayout.CENTER_HORIZONTAL);
+
+        txtView.setLayoutParams(params);
+        txtView.setWidth(width);
+        txtView.setMaxWidth(width);
+        txtView.setTextSize((float) 18);
+        txtView.setPadding(50, 10, 50, 10);
+
+        txtView.setTextColor(getResources().getColor(R.color.colorSecondary));
+
+        return txtView;
     }
 }
