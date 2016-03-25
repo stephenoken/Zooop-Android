@@ -13,17 +13,26 @@ import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.zooop.zooop_android.R;
 import com.zooop.zooop_android.BuildConfig;
+import com.zooop.zooop_android.api.AsyncRequest;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.Arrays;
+import java.util.Set;
 
 
 public class LogInActivity extends Activity {
     private TextView info;
     private CallbackManager callbackManager; //Used to route calls back to fb SDK
     private LoginButton loginButton;//  when someone clicks on the button, the login is initiated with the set permissions.
-
+    private String UserName;
     //  The button follows the login state,
     //  and displays the correct text based on someone's authentication state
     @Override
@@ -54,14 +63,38 @@ public class LogInActivity extends Activity {
     private void fbLogin() {
         callbackManager = CallbackManager.Factory.create();
         loginButton = (LoginButton) findViewById(R.id.login_button);
-        loginButton.setReadPermissions("user_friends");
+        loginButton.setReadPermissions(Arrays.asList(
+                "public_profile",  "user_friends"));
         loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
 
             @Override
             public void onSuccess(LoginResult loginResult) {
-                String userID = loginResult.getAccessToken().getUserId();
+//                String userID = .getUserId();
                 String token = loginResult.getAccessToken().getToken();
+//                Set<String> name = loginResult.getAccessToken().getPermissions();
+                Log.d("User----------------", token);
+                GraphRequest request = GraphRequest.newMeRequest(
+                        loginResult.getAccessToken(),
+                        new GraphRequest.GraphJSONObjectCallback() {
+                            @Override
+                            public void onCompleted(JSONObject object, GraphResponse response) {
 
+                                Log.v("LoginActivity", response.toString());
+
+                                try {
+                                    UserName = object.getString("name");
+                                    // String email = object.getString("email");
+                                    //String birthday = object.getString("birthday");
+                                    Log.v("name----------------->", UserName);
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        });
+                Bundle parameters = new Bundle();
+                parameters.putString("fields", "id,name");
+                request.setParameters(parameters);
+                request.executeAsync();
                 loggedIn();
             }
 
@@ -84,6 +117,11 @@ public class LogInActivity extends Activity {
         Intent i = new Intent(LogInActivity.this, UserIntroActivity.class);
         startActivity(i);
     }
+
+    public String getUserName(){
+        return UserName;
+    }
+
 }
 
 

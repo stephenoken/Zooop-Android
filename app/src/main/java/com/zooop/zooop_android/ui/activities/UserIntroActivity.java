@@ -3,6 +3,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -15,6 +17,12 @@ import android.widget.EditText;
 
 import com.zooop.zooop_android.LocationService;
 import com.zooop.zooop_android.R;
+import com.zooop.zooop_android.api.APIService;
+import com.zooop.zooop_android.api.ApiCallback;
+import com.zooop.zooop_android.api.AsyncRequest;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  * Created by anuj on 2/2/2016.
@@ -23,7 +31,6 @@ public class UserIntroActivity extends AppCompatActivity {
     EditText nickname;
     EditText favCuisine;
     SharedPreferences myPreferences;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,12 +77,36 @@ public class UserIntroActivity extends AppCompatActivity {
 
     private void storeValsAndContinue() {
         //store values permanent
-        storeKeyForValue("nickName", favCuisine.getText().toString());
+        storeKeyForValue("nickName", nickname.getText().toString());
         storeKeyForValue("favCuisine", favCuisine.getText().toString());
-
+        postUserPrefference(favCuisine.getText().toString());
         startActivity();
     }
 
+    public void postUserPrefference(String fCousine){
+        Log.d("postUserPrefference", "called");
+//        LogInActivity user = new LogInActivity();
+//        String name = user.getUserName();
+        String preferences = fCousine;
+        Log.d("name", "hi");
+
+        APIService api = new APIService(new ApiCallback() {
+            @Override
+            public void receivedResponse(String responseString) {
+                System.out.println("-------------" + responseString);
+
+                if(true) {
+                    Log.d("postResponse", responseString);
+
+                }
+                else {
+                    Log.i("API", "CAN NOT CALL API");
+                }
+            }
+        });
+        api.postUserInfo("Michael", preferences);
+
+    }
     private void storeKeyForValue(String value, String key) {
         SharedPreferences.Editor editor = myPreferences.edit();
         editor.putString(value, key);
