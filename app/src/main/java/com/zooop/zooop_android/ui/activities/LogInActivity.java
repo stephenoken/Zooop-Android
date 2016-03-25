@@ -33,15 +33,15 @@ public class LogInActivity extends Activity {
         /** Initializing facebook sdk **/
         FacebookSdk.sdkInitialize(getApplicationContext());
         setContentView(R.layout.activity_log_in);
-
+        fbLogin();
         /** check if user is already logged in **/
-        AccessToken fbAccessToken = AccessToken.getCurrentAccessToken();
-        if(fbAccessToken != null || BuildConfig.DEBUG) {
-            loggedIn();
-        }
-        else {
-            fbLogin();
-        }
+        //AccessToken fbAccessToken = AccessToken.getCurrentAccessToken();
+//        if(fbAccessToken != null || BuildConfig.DEBUG) {
+//            loggedIn();
+//        }
+//        else {
+//         Log.d("haha", "fuck you");
+//        }
     }
 
     @Override
