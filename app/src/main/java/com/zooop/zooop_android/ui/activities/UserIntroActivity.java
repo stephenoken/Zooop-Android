@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -85,10 +86,10 @@ public class UserIntroActivity extends AppCompatActivity {
 
     public void postUserPrefference(String fCousine){
         Log.d("postUserPrefference", "called");
-//        LogInActivity user = new LogInActivity();
-//        String name = user.getUserName();
+        final SharedPreferences mSharedPreference= PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+        String name = mSharedPreference.getString("userName", "notFound");
         String preferences = fCousine;
-        Log.d("name", "hi");
+        Log.d("nameFromSharedPref", name);
 
         APIService api = new APIService(new ApiCallback() {
             @Override
@@ -104,7 +105,7 @@ public class UserIntroActivity extends AppCompatActivity {
                 }
             }
         });
-        api.postUserInfo("Michael", preferences);
+        api.postUserInfo(name, preferences);
 
     }
     private void storeKeyForValue(String value, String key) {

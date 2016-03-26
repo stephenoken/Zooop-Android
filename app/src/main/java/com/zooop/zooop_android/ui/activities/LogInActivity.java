@@ -2,7 +2,9 @@ package com.zooop.zooop_android.ui.activities;
 
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import android.util.Log;
@@ -33,6 +35,7 @@ public class LogInActivity extends Activity {
     private CallbackManager callbackManager; //Used to route calls back to fb SDK
     private LoginButton loginButton;//  when someone clicks on the button, the login is initiated with the set permissions.
     private String UserName;
+    SharedPreferences preferences;
     //  The button follows the login state,
     //  and displays the correct text based on someone's authentication state
     @Override
@@ -64,7 +67,7 @@ public class LogInActivity extends Activity {
         callbackManager = CallbackManager.Factory.create();
         loginButton = (LoginButton) findViewById(R.id.login_button);
         loginButton.setReadPermissions(Arrays.asList(
-                "public_profile",  "user_friends"));
+                "public_profile", "user_friends"));
         loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
 
             @Override
@@ -83,9 +86,15 @@ public class LogInActivity extends Activity {
 
                                 try {
                                     UserName = object.getString("name");
+                                    preferences = getSharedPreferences("userIntro", Context.MODE_PRIVATE);
+                                    SharedPreferences.Editor editor = preferences.edit();
+                                    editor.putString("userName", UserName);
+                                    editor.commit();
+                                    String name = preferences.getString("userName", "notFound");
+                                    Log.d("nameSharedPref------->", name);
                                     // String email = object.getString("email");
                                     //String birthday = object.getString("birthday");
-                                    Log.v("name----------------->", UserName);
+                                    Log.d("name-------------->", UserName);
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                 }
@@ -118,9 +127,7 @@ public class LogInActivity extends Activity {
         startActivity(i);
     }
 
-    public String getUserName(){
-        return UserName;
-    }
+
 
 }
 

@@ -8,7 +8,7 @@ import okhttp3.RequestBody;
 
 public final class AsyncRequest {
     private static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
-    private final static String BASEURL = "http://10.6.36.151:5001";
+    private final static String BASEURL = "http://www.zooop.xyz";
 
     public Request apiRequest(String apiCall, String bodyString) throws Exception {
         RequestBody requestBody = RequestBody.create(JSON, bodyString);
