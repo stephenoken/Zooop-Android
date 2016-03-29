@@ -88,7 +88,7 @@ public class APIService extends AppCompatActivity {
         AsyncRequest asynchronousGet = new AsyncRequest();
 
         try {
-            Request request =  asynchronousGet.apiRequest("adverts-api/get-android-ads", "");
+            Request request = asynchronousGet.apiRequest("adverts-api/get-android-ads", "");
             ApiRequest(request);
         } catch (Exception e) {
             e.printStackTrace();
