@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 
 import android.util.Log;
@@ -22,6 +23,7 @@ import com.facebook.login.widget.LoginButton;
 import com.zooop.zooop_android.R;
 import com.zooop.zooop_android.BuildConfig;
 import com.zooop.zooop_android.api.AsyncRequest;
+import com.zooop.zooop_android.models.UserDbHelper;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -73,6 +75,8 @@ public class LogInActivity extends Activity {
             @Override
             public void onSuccess(LoginResult loginResult) {
 //                String userID = .getUserId();
+                final UserDbHelper userDb = new UserDbHelper(getApplicationContext());
+
                 String token = loginResult.getAccessToken().getToken();
 //                Set<String> name = loginResult.getAccessToken().getPermissions();
                 Log.d("User----------------", token);
@@ -86,12 +90,8 @@ public class LogInActivity extends Activity {
 
                                 try {
                                     UserName = object.getString("name");
-                                    preferences = getSharedPreferences("userIntro", Context.MODE_PRIVATE);
-                                    SharedPreferences.Editor editor = preferences.edit();
-                                    editor.putString("userName", UserName);
-                                    editor.commit();
-                                    String name = preferences.getString("userName", "notFound");
-                                    Log.d("nameSharedPref------->", name);
+                                    userDb.insert(UserName, null, 1);
+//
                                     // String email = object.getString("email");
                                     //String birthday = object.getString("birthday");
                                     Log.d("name-------------->", UserName);
