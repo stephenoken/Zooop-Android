@@ -25,9 +25,19 @@ import com.zooop.zooop_android.api.ApiCallback;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+
 public class DiggyFragment extends Fragment {
+    public static ArrayList<String> postbox = new ArrayList<String>();
     enum SIDE {
         USER, DIGGY;
+    }
+
+    private static DiggyFragment singleton = new DiggyFragment();
+
+    /* Static 'instance' method */
+    public static DiggyFragment getInstance( ) {
+        return singleton;
     }
 
     ScrollView scrollView;
@@ -55,6 +65,18 @@ public class DiggyFragment extends Fragment {
         inputField.isFocusable();
         inputField.requestFocus();
 
+
+
+        if(!postbox.isEmpty()) {
+            for(int i = 0; i < postbox.size(); i++) {
+                String message = postbox.get(i);
+                addChatField(getMsgDiggy(message));
+            }
+        }
+        else {
+            addChatField(getMsgDiggy("Hi, I'm Diggy \uD83D\uDE42"));
+        }
+
         inputField.setOnEditorActionListener(
                 new EditText.OnEditorActionListener() {
                     @Override
@@ -68,6 +90,10 @@ public class DiggyFragment extends Fragment {
                 });
 
         return view;
+    }
+
+    public void newPushMessage(String message) {
+        addChatField(getMsgDiggy(message));
     }
 
     private TextView getMsgDiggy(String message) {
@@ -139,6 +165,8 @@ public class DiggyFragment extends Fragment {
 
         //send iput to diggyApi and add respond to view
         retrieveDiggyAnswer(text);
+
+
 
         inputField.requestFocus();
     }

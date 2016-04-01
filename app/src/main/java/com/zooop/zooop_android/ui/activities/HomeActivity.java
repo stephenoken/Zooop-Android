@@ -36,8 +36,6 @@ public class HomeActivity extends AppCompatActivity {
         pushClientManager.registerIfNeeded(new GCMClientManager.RegistrationCompletedHandler() {
             @Override
             public void onSuccess(String registrationId, boolean isNewRegistration) {
-
-                Log.i("asd", "----------------");
                 Log.i("ID: ",registrationId);
                 //send this registrationId to your server
             }
@@ -117,12 +115,12 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private void setDiggyFragment() {
-        Fragment fragment = new DiggyFragment();
+        Fragment fragment = DiggyFragment.getInstance();
         changeFragment(fragment);
     }
 
     private void setDiscoverFragment() {
-        Fragment fragment = new DiscoverFragment();
+        Fragment fragment = DiscoverFragment.getInstance();
         changeFragment(fragment);
     }
 

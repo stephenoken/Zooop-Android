@@ -31,6 +31,12 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class DiscoverFragment extends Fragment {
+    private static DiscoverFragment singleton = new DiscoverFragment();
+
+    /* Static 'instance' method */
+    public static DiscoverFragment getInstance( ) {
+        return singleton;
+    }
 
     ScrollView scrollView;
     Screen screen = new Screen();
@@ -94,8 +100,6 @@ public class DiscoverFragment extends Fragment {
 
                             String shopName = shopInfo.getString("name");
                             String[] shopCoordinates = splitToStringArray(shopInfo.getString("location"));
-
-                           // String[] shopCoordinates = {"45.0", "20.56"};
 
                             final DiscoverAds ad = new DiscoverAds(adId, adName, adDescription, adImageUrl, adTags, adCreatedAt , shopName, shopCoordinates);
 
