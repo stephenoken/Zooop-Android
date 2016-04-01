@@ -13,4 +13,14 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string-array name="spinner">
+        <item>Irish</item>
+        <item>German</item>
+        <item>Indian</item>
+        <item>Russian</item>
+        <item>Italian</item>
+        <item>Chineese</item>
+        <item>British</item>
+    </string-array>
 </resources>

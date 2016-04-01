@@ -18,6 +18,9 @@ import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 import com.zooop.zooop_android.GCMPush.GCMClientManager;
 import com.zooop.zooop_android.LocationService;
 import com.zooop.zooop_android.R;
+import com.zooop.zooop_android.api.APIService;
+import com.zooop.zooop_android.api.ApiCallback;
+import com.zooop.zooop_android.models.UserDbHelper;
 import com.zooop.zooop_android.ui.fragments.DiggyFragment;
 import com.zooop.zooop_android.ui.fragments.DiscoverFragment;
 import com.zooop.zooop_android.ui.fragments.DiscoverMapFragment;
@@ -38,6 +41,12 @@ public class HomeActivity extends AppCompatActivity {
             public void onSuccess(String registrationId, boolean isNewRegistration) {
                 Log.i("ID: ",registrationId);
                 //send this registrationId to your server
+                final UserDbHelper userDb = new UserDbHelper(getApplicationContext());
+                String details[] = userDb.readReturn();
+                userDb.update(details[0], details[1], details[2], registrationId);
+                String pref[] = userDb.readReturn();
+                Log.d("PrintingPref", pref[0]);
+                postUserPrefference(pref[3], pref[1], pref[2]);
             }
 
             @Override
@@ -107,10 +116,30 @@ public class HomeActivity extends AppCompatActivity {
         mDrawer.getActionBarDrawerToggle().setDrawerIndicatorEnabled(true);
     }
 
+    public void postUserPrefference(String gcmID, String name, String preference){
+        Log.d("postUserPrefference", "called");
 
+
+        APIService api = new APIService(new ApiCallback() {
+            @Override
+            public void receivedResponse(String responseString) {
+                System.out.println("-------------" + responseString);
+
+                if(true) {
+                    Log.d("postResponse", responseString);
+
+                }
+                else {
+                    Log.i("API", "CAN NOT CALL API");
+                }
+            }
+        });
+        api.postUserInfo(gcmID, name, preference);
+
+    }
     /******* functions: change fragment *******/
     private void setDiscoverMapsFragment() {
-        Fragment fragment = new DiscoverMapFragment();
+        Fragment fragment = DiscoverMapFragment.getInstance();
         changeFragment(fragment);
     }
 

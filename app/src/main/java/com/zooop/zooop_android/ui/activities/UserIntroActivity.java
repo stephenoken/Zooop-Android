@@ -5,41 +5,38 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.KeyEvent;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.Spinner;
 
-import com.zooop.zooop_android.LocationService;
 import com.zooop.zooop_android.R;
+import com.zooop.zooop_android.models.UserDbHelper;
+
+
 
 /**
  * Created by anuj on 2/2/2016.
  */
 public class UserIntroActivity extends AppCompatActivity {
-    EditText nickname;
-    EditText favCuisine;
+    Spinner favCuisine;
     SharedPreferences myPreferences;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_intro);
 
-        /** retrieve the nickname and the favourite cuisine from the user **/
+        /** retrieve the favourite cuisine from the user **/
         myPreferences = getSharedPreferences ("userInfo", Context.MODE_PRIVATE);
-        String nickStr = myPreferences.getString("nickName", null);
         String favCuisStr = myPreferences.getString("favCuisine", null);
 
-        if(nickStr != null && favCuisStr != null) {
+        if(favCuisStr != null) {
             startActivity();
         }
         else {
-            nickname = (EditText) findViewById(R.id.nickInput);
-            favCuisine = (EditText) findViewById(R.id.favCousineInput);
+
+            favCuisine = (Spinner) findViewById(R.id.spinnerCuisine);
 
             favCuisine.setOnKeyListener(new View.OnKeyListener() {
                 @Override
@@ -70,16 +67,10 @@ public class UserIntroActivity extends AppCompatActivity {
 
     private void storeValsAndContinue() {
         //store values permanent
-        storeKeyForValue("nickName", favCuisine.getText().toString());
-        storeKeyForValue("favCuisine", favCuisine.getText().toString());
-
+        final UserDbHelper userDb = new UserDbHelper(getApplicationContext());
+        String details[] = userDb.readReturn();
+        userDb.update(details[0], details[1], favCuisine.getSelectedItem().toString(), null);
         startActivity();
-    }
-
-    private void storeKeyForValue(String value, String key) {
-        SharedPreferences.Editor editor = myPreferences.edit();
-        editor.putString(value, key);
-        editor.apply();
     }
 
     private void startActivity() {

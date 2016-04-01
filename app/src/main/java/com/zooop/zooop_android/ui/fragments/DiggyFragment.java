@@ -28,7 +28,6 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 public class DiggyFragment extends Fragment {
-    public static ArrayList<String> postbox = new ArrayList<String>();
     enum SIDE {
         USER, DIGGY;
     }
@@ -65,18 +64,6 @@ public class DiggyFragment extends Fragment {
         inputField.isFocusable();
         inputField.requestFocus();
 
-
-
-        if(!postbox.isEmpty()) {
-            for(int i = 0; i < postbox.size(); i++) {
-                String message = postbox.get(i);
-                addChatField(getMsgDiggy(message));
-            }
-        }
-        else {
-            addChatField(getMsgDiggy("Hi, I'm Diggy \uD83D\uDE42"));
-        }
-
         inputField.setOnEditorActionListener(
                 new EditText.OnEditorActionListener() {
                     @Override
@@ -90,10 +77,6 @@ public class DiggyFragment extends Fragment {
                 });
 
         return view;
-    }
-
-    public void newPushMessage(String message) {
-        addChatField(getMsgDiggy(message));
     }
 
     private TextView getMsgDiggy(String message) {
