@@ -128,7 +128,7 @@ public class APIService extends AppCompatActivity {
         String requestBody = getParamsJSON(keys,values).toString();
         Log.d("requestBodyAPI", requestBody);
         try {
-            Request request = call.apiRequest("/clients/new-info", requestBody);
+            Request request = call.apiRequest("clients/new-info", requestBody);
             ApiRequest(request);
         } catch (Exception e) {
             e.printStackTrace();
