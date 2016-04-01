@@ -9,6 +9,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.Spinner;
 
 import com.zooop.zooop_android.R;
 import com.zooop.zooop_android.models.UserDbHelper;
@@ -19,7 +20,7 @@ import com.zooop.zooop_android.models.UserDbHelper;
  * Created by anuj on 2/2/2016.
  */
 public class UserIntroActivity extends AppCompatActivity {
-    EditText favCuisine;
+    Spinner favCuisine;
     SharedPreferences myPreferences;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +36,7 @@ public class UserIntroActivity extends AppCompatActivity {
         }
         else {
 
-            favCuisine = (EditText) findViewById(R.id.favCousineInput);
+            favCuisine = (Spinner) findViewById(R.id.spinnerCuisine);
 
             favCuisine.setOnKeyListener(new View.OnKeyListener() {
                 @Override
@@ -68,7 +69,7 @@ public class UserIntroActivity extends AppCompatActivity {
         //store values permanent
         final UserDbHelper userDb = new UserDbHelper(getApplicationContext());
         String details[] = userDb.readReturn();
-        userDb.update(details[0], details[1], favCuisine.getText().toString(), null);
+        userDb.update(details[0], details[1], favCuisine.getSelectedItem().toString(), null);
         startActivity();
     }
 

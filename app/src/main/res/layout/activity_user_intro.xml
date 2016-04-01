@@ -91,16 +91,24 @@
                 android:layout_below="@+id/nickInput"
                 android:layout_alignParentStart="true" />
 
-            <EditText
+            <Spinner
+                android:id="@+id/spinnerCuisine"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/favCousineInput"
-                android:singleLine="true"
-                android:layout_below="@+id/txtvw1"
-                android:layout_alignParentStart="true"
-                android:layout_alignEnd="@+id/txtvw1"
-                android:textStyle="normal"
-                android:contextClickable="false" />
+                android:background="@android:drawable/btn_dropdown"
+                android:entries="@array/spinner"
+                android:spinnerMode="dropdown" />
+
+            <!--<EditText-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:id="@+id/favCousineInput"-->
+                <!--android:singleLine="true"-->
+                <!--android:layout_below="@+id/txtvw1"-->
+                <!--android:layout_alignParentStart="true"-->
+                <!--android:layout_alignEnd="@+id/txtvw1"-->
+                <!--android:textStyle="normal"-->
+                <!--android:contextClickable="false" />-->
 
         </TableLayout>
 

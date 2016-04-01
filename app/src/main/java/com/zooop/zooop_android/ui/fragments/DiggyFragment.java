@@ -25,9 +25,18 @@ import com.zooop.zooop_android.api.ApiCallback;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+
 public class DiggyFragment extends Fragment {
     enum SIDE {
         USER, DIGGY;
+    }
+
+    private static DiggyFragment singleton = new DiggyFragment();
+
+    /* Static 'instance' method */
+    public static DiggyFragment getInstance( ) {
+        return singleton;
     }
 
     ScrollView scrollView;
@@ -139,6 +148,8 @@ public class DiggyFragment extends Fragment {
 
         //send iput to diggyApi and add respond to view
         retrieveDiggyAnswer(text);
+
+
 
         inputField.requestFocus();
     }

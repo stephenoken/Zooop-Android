@@ -39,9 +39,7 @@ public class HomeActivity extends AppCompatActivity {
         pushClientManager.registerIfNeeded(new GCMClientManager.RegistrationCompletedHandler() {
             @Override
             public void onSuccess(String registrationId, boolean isNewRegistration) {
-
-                Log.i("asd", "----------------");
-                Log.i("ID:--- ",registrationId);
+                Log.i("ID: ",registrationId);
                 //send this registrationId to your server
                 final UserDbHelper userDb = new UserDbHelper(getApplicationContext());
                 String details[] = userDb.readReturn();
@@ -141,17 +139,17 @@ public class HomeActivity extends AppCompatActivity {
     }
     /******* functions: change fragment *******/
     private void setDiscoverMapsFragment() {
-        Fragment fragment = new DiscoverMapFragment();
+        Fragment fragment = DiscoverMapFragment.getInstance();
         changeFragment(fragment);
     }
 
     private void setDiggyFragment() {
-        Fragment fragment = new DiggyFragment();
+        Fragment fragment = DiggyFragment.getInstance();
         changeFragment(fragment);
     }
 
     private void setDiscoverFragment() {
-        Fragment fragment = new DiscoverFragment();
+        Fragment fragment = DiscoverFragment.getInstance();
         changeFragment(fragment);
     }
 
