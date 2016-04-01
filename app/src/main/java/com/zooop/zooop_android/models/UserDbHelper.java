@@ -28,17 +28,12 @@ public class UserDbHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public boolean insert(String name, String preference, int flag) {
+    public boolean insert(String name, String preference) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
-        if (flag==1)
-           values.put(UserContract.UserEntry.COL_2, name);
-        else if(flag==0)
-           values.put(UserContract.UserEntry.COL_3, preference);
+        values.put(UserContract.UserEntry.COL_2, name);
+        values.put(UserContract.UserEntry.COL_3, preference);
         long result = db.insert(UserContract.UserEntry.TABLE_NAME, null, values);
-        System.out.print("result---------------" + result);
-        Log.d("namehaha", name);
-        read();
         if (result == -1)
             return false;
 
@@ -46,22 +41,41 @@ public class UserDbHelper extends SQLiteOpenHelper {
             return true;
     }
 
-    public void read(){
+    public String[] readReturn(){
         SQLiteDatabase db = this.getReadableDatabase();
-
-        String[] projection = {
-                UserContract.UserEntry.COL_1,
-                UserContract.UserEntry.COL_2,
-                UserContract.UserEntry.COL_3
-
-        };
-
-
         String selectQuery = "SELECT  * FROM " + "user";
         Cursor cursor   = db.rawQuery(selectQuery, null);
         cursor.moveToLast();
 
-        System.out.println("cursor=-------------------"+cursor.getString(1));
+        String ans[] = {cursor.getString(0),
+                        cursor.getString(1),
+                        cursor.getString(2)};
+        Log.d("readReturn--", ans[0] + ans[1] + ans[2]);
+
+        return ans;
+    }
+
+    public boolean update(String id, String name, String preference){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put(UserContract.UserEntry.COL_1, id);
+        cv.put(UserContract.UserEntry.COL_2, name);
+        cv.put(UserContract.UserEntry.COL_3, preference);
+        db.update(UserContract.UserEntry.TABLE_NAME, cv, "id = ?", new String[]{id});
+        read();
+        return true;
+
+    }
+
+    public void read(){
+        SQLiteDatabase db = this.getReadableDatabase();
+        String selectQuery = "SELECT  * FROM " + "user";
+        Cursor cursor   = db.rawQuery(selectQuery, null);
+        cursor.moveToLast();
+
+        System.out.println("User--->" + cursor.getInt(0)
+                            +" " + cursor.getString(1)
+                            +" " + cursor.getString(2));
     }
 
 }

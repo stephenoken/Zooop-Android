@@ -12,7 +12,7 @@ public final class AsyncRequest {
 
     public Request apiRequest(String apiCall, String bodyString) throws Exception {
         RequestBody requestBody = RequestBody.create(JSON, bodyString);
-        Log.d("boooty", bodyString);
+        Log.d("bodyString", bodyString);
         String urlString = BASEURL + apiCall;
 
         Request request = new Request.Builder()

@@ -114,12 +114,12 @@ public class APIService extends AppCompatActivity {
         }
     }
 
-    public void postUserInfo(String name, String preferences){
+    public void postUserInfo(String id, String name, String preferences){
         Log.d("postUserInfo", "called");
         AsyncRequest call = new AsyncRequest();
 
         String[] keys = {"_id","name","preferences"};
-        String[] values = {"385689374893249328","name", preferences};
+        String[] values = {id,name, preferences};
 
         String requestBody = getParamsJSON(keys,values).toString();
         Log.d("requestBodyAPI", requestBody);

@@ -21,6 +21,7 @@ import com.zooop.zooop_android.R;
 import com.zooop.zooop_android.api.APIService;
 import com.zooop.zooop_android.api.ApiCallback;
 import com.zooop.zooop_android.api.AsyncRequest;
+import com.zooop.zooop_android.models.UserDbHelper;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -29,7 +30,6 @@ import org.json.JSONObject;
  * Created by anuj on 2/2/2016.
  */
 public class UserIntroActivity extends AppCompatActivity {
-    EditText nickname;
     EditText favCuisine;
     SharedPreferences myPreferences;
     @Override
@@ -37,16 +37,15 @@ public class UserIntroActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_intro);
 
-        /** retrieve the nickname and the favourite cuisine from the user **/
+        /** retrieve the favourite cuisine from the user **/
         myPreferences = getSharedPreferences ("userInfo", Context.MODE_PRIVATE);
-        String nickStr = myPreferences.getString("nickName", null);
         String favCuisStr = myPreferences.getString("favCuisine", null);
 
-        if(nickStr != null && favCuisStr != null) {
+        if(favCuisStr != null) {
             startActivity();
         }
         else {
-            nickname = (EditText) findViewById(R.id.nickInput);
+
             favCuisine = (EditText) findViewById(R.id.favCousineInput);
 
             favCuisine.setOnKeyListener(new View.OnKeyListener() {
@@ -78,18 +77,17 @@ public class UserIntroActivity extends AppCompatActivity {
 
     private void storeValsAndContinue() {
         //store values permanent
-        storeKeyForValue("nickName", nickname.getText().toString());
-        storeKeyForValue("favCuisine", favCuisine.getText().toString());
-        postUserPrefference(favCuisine.getText().toString());
+        final UserDbHelper userDb = new UserDbHelper(getApplicationContext());
+        String details[] = userDb.readReturn();
+        userDb.update(details[0], details[1], favCuisine.getText().toString());
+        String pref[] = userDb.readReturn();
+        postUserPrefference(pref[0], pref[1], pref[2]);
         startActivity();
     }
 
-    public void postUserPrefference(String fCousine){
+    public void postUserPrefference(String id, String name,String preference){
         Log.d("postUserPrefference", "called");
-        final SharedPreferences mSharedPreference= PreferenceManager.getDefaultSharedPreferences(getBaseContext());
-        String name = mSharedPreference.getString("userName", "notFound");
-        String preferences = fCousine;
-        Log.d("nameFromSharedPref", name);
+
 
         APIService api = new APIService(new ApiCallback() {
             @Override
@@ -105,7 +103,7 @@ public class UserIntroActivity extends AppCompatActivity {
                 }
             }
         });
-        api.postUserInfo(name, preferences);
+        api.postUserInfo(id, name, preference);
 
     }
     private void storeKeyForValue(String value, String key) {

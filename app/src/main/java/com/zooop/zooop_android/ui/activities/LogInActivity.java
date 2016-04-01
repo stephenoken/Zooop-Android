@@ -74,11 +74,9 @@ public class LogInActivity extends Activity {
 
             @Override
             public void onSuccess(LoginResult loginResult) {
-//                String userID = .getUserId();
-                final UserDbHelper userDb = new UserDbHelper(getApplicationContext());
 
+                final UserDbHelper userDb = new UserDbHelper(getApplicationContext());
                 String token = loginResult.getAccessToken().getToken();
-//                Set<String> name = loginResult.getAccessToken().getPermissions();
                 Log.d("User----------------", token);
                 GraphRequest request = GraphRequest.newMeRequest(
                         loginResult.getAccessToken(),
@@ -90,10 +88,7 @@ public class LogInActivity extends Activity {
 
                                 try {
                                     UserName = object.getString("name");
-                                    userDb.insert(UserName, null, 1);
-//
-                                    // String email = object.getString("email");
-                                    //String birthday = object.getString("birthday");
+                                    userDb.insert(UserName, null);
                                     Log.d("name-------------->", UserName);
                                 } catch (JSONException e) {
                                     e.printStackTrace();
