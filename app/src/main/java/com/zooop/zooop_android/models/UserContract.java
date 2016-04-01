@@ -18,13 +18,15 @@ public final class UserContract {
         public static final String COL_1 = "id";
         public static final String COL_2 = "name";
         public static final String COL_3 = "preference";
+        public static final String COL_4 = "gcmID";
 
 
         public static final String SQL_CREATE_ENTRIES =
                 "CREATE TABLE " + TABLE_NAME + " (" +
                         COL_1 + " INTEGER PRIMARY KEY," +
                         COL_2 + TEXT_TYPE + COMMA_SEP +
-                        COL_3 + TEXT_TYPE + " )";
+                        COL_3 + TEXT_TYPE + COMMA_SEP +
+                        COL_4 + TEXT_TYPE + " )";
 
         public static final String SQL_DELETE_ENTRIES =
                 "DROP TABLE IF EXISTS " + TABLE_NAME;

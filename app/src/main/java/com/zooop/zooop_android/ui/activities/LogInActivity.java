@@ -48,14 +48,7 @@ public class LogInActivity extends Activity {
         FacebookSdk.sdkInitialize(getApplicationContext());
         setContentView(R.layout.activity_log_in);
         fbLogin();
-        /** check if user is already logged in **/
-        //AccessToken fbAccessToken = AccessToken.getCurrentAccessToken();
-//        if(fbAccessToken != null || BuildConfig.DEBUG) {
-//            loggedIn();
-//        }
-//        else {
-//         Log.d("haha", "fuck you");
-//        }
+
     }
 
     @Override
@@ -88,7 +81,7 @@ public class LogInActivity extends Activity {
 
                                 try {
                                     UserName = object.getString("name");
-                                    userDb.insert(UserName, null);
+                                    userDb.insert(UserName, null, null);
                                     Log.d("name-------------->", UserName);
                                 } catch (JSONException e) {
                                     e.printStackTrace();

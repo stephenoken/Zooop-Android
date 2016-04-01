@@ -28,11 +28,12 @@ public class UserDbHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public boolean insert(String name, String preference) {
+    public boolean insert(String name, String preference, String gcmID) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(UserContract.UserEntry.COL_2, name);
         values.put(UserContract.UserEntry.COL_3, preference);
+        values.put(UserContract.UserEntry.COL_4, gcmID);
         long result = db.insert(UserContract.UserEntry.TABLE_NAME, null, values);
         if (result == -1)
             return false;
@@ -49,18 +50,21 @@ public class UserDbHelper extends SQLiteOpenHelper {
 
         String ans[] = {cursor.getString(0),
                         cursor.getString(1),
-                        cursor.getString(2)};
+                        cursor.getString(2),
+                        cursor.getString(3)};
         Log.d("readReturn--", ans[0] + ans[1] + ans[2]);
 
         return ans;
     }
 
-    public boolean update(String id, String name, String preference){
+    public boolean update(String id, String name, String preference, String gcmID){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
+        Log.d("updateDB", id+name+preference);
         cv.put(UserContract.UserEntry.COL_1, id);
         cv.put(UserContract.UserEntry.COL_2, name);
         cv.put(UserContract.UserEntry.COL_3, preference);
+        cv.put(UserContract.UserEntry.COL_4, gcmID);
         db.update(UserContract.UserEntry.TABLE_NAME, cv, "id = ?", new String[]{id});
         read();
         return true;
@@ -74,8 +78,8 @@ public class UserDbHelper extends SQLiteOpenHelper {
         cursor.moveToLast();
 
         System.out.println("User--->" + cursor.getInt(0)
-                            +" " + cursor.getString(1)
-                            +" " + cursor.getString(2));
+                + " " + cursor.getString(1)
+                + " " + cursor.getString(2));
     }
 
 }
