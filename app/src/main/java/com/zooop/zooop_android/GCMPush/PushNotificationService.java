@@ -1,6 +1,8 @@
 package com.zooop.zooop_android.GCMPush;
 
 import android.os.Bundle;
+import android.util.Log;
+
 import com.google.android.gms.gcm.GcmListenerService;
 
 /**
@@ -11,6 +13,8 @@ public class PushNotificationService extends GcmListenerService {
     public void onMessageReceived(String from, Bundle data) {
         String message = data.getString("message");
 
-        System.out.println(">>>>>>>>>>>" + message);
+
+        Log.i("", "\n\n\n\n\n\n\n\n");
+        Log.i(">>>>>>>>>>>", message);
     }
 }

@@ -93,9 +93,9 @@ public class DiscoverFragment extends Fragment {
                             JSONObject shopInfo = jsonObj.getJSONObject("shopInfo");
 
                             String shopName = shopInfo.getString("name");
-                           // String[] shopCoordinates = splitToStringArray(shopInfo.getString("location"));
+                            String[] shopCoordinates = splitToStringArray(shopInfo.getString("location"));
 
-                            String[] shopCoordinates = {"45.0", "20.56"};
+                           // String[] shopCoordinates = {"45.0", "20.56"};
 
                             final DiscoverAds ad = new DiscoverAds(adId, adName, adDescription, adImageUrl, adTags, adCreatedAt , shopName, shopCoordinates);
 
@@ -121,7 +121,7 @@ public class DiscoverFragment extends Fragment {
     }
 
     public void addAd(final DiscoverAds ad) {
-        final RelativeLayout adLayout = new RelativeLayout(getActivity());
+        RelativeLayout adLayout = new RelativeLayout(getActivity());
         adLayout.setBackgroundColor(Color.WHITE);
 
         RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams

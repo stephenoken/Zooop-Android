@@ -2,7 +2,6 @@ package com.zooop.zooop_android.ui.activities;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -11,8 +10,6 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-
-import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.mikepenz.materialdrawer.Drawer;
 import com.mikepenz.materialdrawer.DrawerBuilder;
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
@@ -30,30 +27,24 @@ import java.io.IOException;
 public class HomeActivity extends AppCompatActivity {
     private Drawer mDrawer;
 
-    String PROJECT_NUMBER = "665662071179";
+    String PROJECT_NUMBER = "436096000964";
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
-        SharedPreferences sharedpreferences = getSharedPreferences("userInfo", Context.MODE_PRIVATE);
-        String nickStr = sharedpreferences.getString("nickName", null);
-        System.out.println("--------------------------------------");
-        System.out.println(nickStr);
 
         GCMClientManager pushClientManager = new GCMClientManager(this, PROJECT_NUMBER);
         pushClientManager.registerIfNeeded(new GCMClientManager.RegistrationCompletedHandler() {
             @Override
             public void onSuccess(String registrationId, boolean isNewRegistration) {
 
-                System.out.print("--------------------------");
-                System.out.print(registrationId);
+                Log.i("asd", "----------------");
+                Log.i("ID: ",registrationId);
                 //send this registrationId to your server
             }
 
             @Override
             public void onFailure(String ex) {
-                System.out.print("--------------FAILURE ");
+                Log.i("","--------------FAILURE ");
                 super.onFailure(ex);
             }
         });
@@ -70,8 +61,7 @@ public class HomeActivity extends AppCompatActivity {
         }
 
         // set map as initial fragment
-        //setDiscoverMapsFragment();
-        setDiscoverFragment();
+        setDiggyFragment();
 
         // create menu items
         final PrimaryItem map = new PrimaryItem("Map", 0);

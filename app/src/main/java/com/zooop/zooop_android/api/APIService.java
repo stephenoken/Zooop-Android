@@ -55,6 +55,10 @@ public class APIService extends AppCompatActivity {
                 }
 
                 String responseBody = response.body().string();
+                if(responseBody == null) {
+                    responseBody = "";
+                }
+
                 callback.receivedResponse(responseBody);
             }
         });
