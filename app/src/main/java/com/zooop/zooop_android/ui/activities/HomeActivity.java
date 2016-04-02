@@ -1,10 +1,12 @@
 package com.zooop.zooop_android.ui.activities;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -39,13 +41,11 @@ public class HomeActivity extends AppCompatActivity {
         pushClientManager.registerIfNeeded(new GCMClientManager.RegistrationCompletedHandler() {
             @Override
             public void onSuccess(String registrationId, boolean isNewRegistration) {
-                Log.i("ID: ",registrationId);
-                //send this registrationId to your server
+
                 final UserDbHelper userDb = new UserDbHelper(getApplicationContext());
                 String details[] = userDb.readReturn();
                 userDb.update(details[0], details[1], details[2], registrationId);
                 String pref[] = userDb.readReturn();
-                Log.d("PrintingPref", pref[0]);
                 postUserPrefference(pref[3], pref[1], pref[2]);
             }
 
@@ -67,8 +67,23 @@ public class HomeActivity extends AppCompatActivity {
             Log.i("PERMISSIONS", "LOCATION");
         }
 
-        // set map as initial fragment
-        setDiggyFragment();
+        // set initial fragment
+        Intent intent = getIntent();
+
+        if(intent.hasExtra("id")) {
+            try {
+                if (intent.getStringExtra("id").equals("newDiggyMessage")) {
+                    setDiggyFragment();
+                }
+            }
+            catch (Exception e) {
+                Log.e("-", "",  e);
+            }
+        }
+        else {
+            setDiscoverMapsFragment();
+        }
+
 
         // create menu items
         final PrimaryItem map = new PrimaryItem("Map", 0);
@@ -117,17 +132,11 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     public void postUserPrefference(String gcmID, String name, String preference){
-        Log.d("postUserPrefference", "called");
-
-
         APIService api = new APIService(new ApiCallback() {
             @Override
             public void receivedResponse(String responseString) {
-                System.out.println("-------------" + responseString);
-
-                if(true) {
+                if(!responseString.equals("?")) {
                     Log.d("postResponse", responseString);
-
                 }
                 else {
                     Log.i("API", "CAN NOT CALL API");
