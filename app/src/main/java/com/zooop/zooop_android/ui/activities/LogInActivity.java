@@ -1,14 +1,10 @@
 package com.zooop.zooop_android.ui.activities;
 
-
 import android.app.Activity;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-
 import android.util.Log;
 import android.widget.TextView;
-
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
@@ -19,15 +15,12 @@ import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.zooop.zooop_android.R;
 import com.zooop.zooop_android.models.UserDbHelper;
-
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.util.Arrays;
 
 
 public class LogInActivity extends Activity {
-    private TextView info;
     private CallbackManager callbackManager; //Used to route calls back to fb SDK
     private LoginButton loginButton;//  when someone clicks on the button, the login is initiated with the set permissions.
     private String UserName;
@@ -41,7 +34,6 @@ public class LogInActivity extends Activity {
         FacebookSdk.sdkInitialize(getApplicationContext());
         setContentView(R.layout.activity_log_in);
         fbLogin();
-
     }
 
     @Override
@@ -63,19 +55,14 @@ public class LogInActivity extends Activity {
 
                 final UserDbHelper userDb = new UserDbHelper(getApplicationContext());
                 String token = loginResult.getAccessToken().getToken();
-                Log.d("User----------------", token);
                 GraphRequest request = GraphRequest.newMeRequest(
                         loginResult.getAccessToken(),
                         new GraphRequest.GraphJSONObjectCallback() {
                             @Override
                             public void onCompleted(JSONObject object, GraphResponse response) {
-
-                                Log.v("LoginActivity", response.toString());
-
                                 try {
                                     UserName = object.getString("name");
                                     userDb.insert(UserName, null, null);
-                                    Log.d("name-------------->", UserName);
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                 }
@@ -90,13 +77,11 @@ public class LogInActivity extends Activity {
 
             @Override
             public void onCancel() {
-                info.setText("Facebook login attempt Cancelled");
                 Log.d("Canceled", "Facebook login attempt Cancelled");
             }
 
             @Override
             public void onError(FacebookException exception) {
-                info.setText("Login Error");
                 Log.d("Facebook exception", exception.getMessage());
             }
         });
@@ -107,9 +92,6 @@ public class LogInActivity extends Activity {
         Intent i = new Intent(LogInActivity.this, UserIntroActivity.class);
         startActivity(i);
     }
-
-
-
 }
 
 
