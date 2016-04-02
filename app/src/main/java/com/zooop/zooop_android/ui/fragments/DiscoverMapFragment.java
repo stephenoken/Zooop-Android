@@ -17,6 +17,12 @@ import com.zooop.zooop_android.LocationService;
 import com.zooop.zooop_android.R;
 
 public class DiscoverMapFragment extends Fragment implements OnMapReadyCallback {
+    private static DiscoverMapFragment singleton = new DiscoverMapFragment();
+
+    /* Static 'instance' method */
+    public static DiscoverMapFragment getInstance( ) {
+        return singleton;
+    }
 
     private static int ZOOMLEVEL = 13;
     private GoogleMap mMap;

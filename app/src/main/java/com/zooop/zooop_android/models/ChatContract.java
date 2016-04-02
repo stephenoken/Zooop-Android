@@ -2,7 +2,10 @@ package com.zooop.zooop_android.models;
 
 import android.provider.BaseColumns;
 
-public final class UserContract {
+/**
+ * Created by harpreet on 01/04/16.
+ */
+public class ChatContract {
 
     public static final String DATABASE_NAME = "facebookUser.db";
     public static final int DATABASE_VERSION = 1;
@@ -11,22 +14,21 @@ public final class UserContract {
 
     // To prevent someone from accidentally instantiating the contract class,
     // give it an empty constructor.
-    public UserContract() {}
+    public ChatContract() {}
 
-    public static abstract class UserEntry implements BaseColumns {
-        public static final String TABLE_NAME = "user";
+    public static abstract class ChatEntry implements BaseColumns {
+        public static final String TABLE_NAME = "chat";
         public static final String COL_1 = "id";
-        public static final String COL_2 = "name";
-        public static final String COL_3 = "preference";
-        public static final String COL_4 = "gcmID";
+        public static final String COL_2 = "type";
+        public static final String COL_3 = "message";
+
 
 
         public static final String SQL_CREATE_ENTRIES =
                 "CREATE TABLE " + TABLE_NAME + " (" +
                         COL_1 + " INTEGER PRIMARY KEY," +
                         COL_2 + TEXT_TYPE + COMMA_SEP +
-                        COL_3 + TEXT_TYPE + COMMA_SEP +
-                        COL_4 + TEXT_TYPE + " )";
+                        COL_3 + TEXT_TYPE + " )";
 
         public static final String SQL_DELETE_ENTRIES =
                 "DROP TABLE IF EXISTS " + TABLE_NAME;

@@ -1,5 +1,7 @@
 package com.zooop.zooop_android.api;
 
+import android.util.Log;
+
 import okhttp3.MediaType;
 import okhttp3.Request;
 import okhttp3.RequestBody;
@@ -10,6 +12,7 @@ public final class AsyncRequest {
 
     public Request apiRequest(String apiCall, String bodyString) throws Exception {
         RequestBody requestBody = RequestBody.create(JSON, bodyString);
+        Log.d("bodyString", bodyString);
         String urlString = BASEURL + apiCall;
 
         Request request = new Request.Builder()
@@ -27,4 +30,5 @@ public final class AsyncRequest {
 
         return request;
     }
+
 }

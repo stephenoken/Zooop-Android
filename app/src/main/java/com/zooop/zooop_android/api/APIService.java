@@ -10,6 +10,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Base64;
 import android.util.Log;
 
+import com.zooop.zooop_android.ui.activities.LogInActivity;
+import com.zooop.zooop_android.ui.activities.UserIntroActivity;
+
 import org.apache.commons.io.IOUtils;
 import org.json.JSONObject;
 
@@ -55,6 +58,10 @@ public class APIService extends AppCompatActivity {
                 }
 
                 String responseBody = response.body().string();
+                if(responseBody == null) {
+                    responseBody = "";
+                }
+
                 callback.receivedResponse(responseBody);
             }
         });
@@ -88,7 +95,7 @@ public class APIService extends AppCompatActivity {
         AsyncRequest asynchronousGet = new AsyncRequest();
 
         try {
-            Request request =  asynchronousGet.apiRequest("adverts-api/get-android-ads", "");
+            Request request = asynchronousGet.apiRequest("adverts-api/get-android-ads", "");
             ApiRequest(request);
         } catch (Exception e) {
             e.printStackTrace();
@@ -105,6 +112,23 @@ public class APIService extends AppCompatActivity {
 
         try {
             Request request =  asynchronousGet.apiRequest("api/messageDiggy", requestBody);
+            ApiRequest(request);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void postUserInfo(String id, String name, String preferences){
+        Log.d("postUserInfo", "called");
+        AsyncRequest call = new AsyncRequest();
+
+        String[] keys = {"_id","name","preferences"};
+        String[] values = {id,name, preferences};
+
+        String requestBody = getParamsJSON(keys,values).toString();
+        Log.d("requestBodyAPI", requestBody);
+        try {
+            Request request = call.apiRequest("clients/new-info", requestBody);
             ApiRequest(request);
         } catch (Exception e) {
             e.printStackTrace();
