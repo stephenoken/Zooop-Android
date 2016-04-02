@@ -1,5 +1,7 @@
 package com.zooop.zooop_android.ui.fragments;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -29,6 +31,12 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class DiscoverFragment extends Fragment {
+    private static DiscoverFragment singleton = new DiscoverFragment();
+
+    /* Static 'instance' method */
+    public static DiscoverFragment getInstance( ) {
+        return singleton;
+    }
 
     ScrollView scrollView;
     Screen screen = new Screen();
@@ -82,7 +90,7 @@ public class DiscoverFragment extends Fragment {
 
                             String adImageUrl;
                             try {
-                                adImageUrl = adInfo.getString("imageUrl");
+                                adImageUrl = adInfo.getString("imgUrl");
                             }
                             catch(Exception e) {
                                 adImageUrl = "";
@@ -117,7 +125,7 @@ public class DiscoverFragment extends Fragment {
     }
 
     public void addAd(final DiscoverAds ad) {
-        final RelativeLayout adLayout = new RelativeLayout(getActivity());
+        RelativeLayout adLayout = new RelativeLayout(getActivity());
         adLayout.setBackgroundColor(Color.WHITE);
 
         RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams
@@ -134,6 +142,7 @@ public class DiscoverFragment extends Fragment {
         RelativeLayout.LayoutParams parameters = new RelativeLayout.LayoutParams(100,100);
         parameters.addRule(RelativeLayout.CENTER_IN_PARENT);
         parameters.addRule(RelativeLayout.ALIGN_PARENT_TOP, RelativeLayout.TRUE);
+        progressBar.setY(250);
         adLayout.addView(progressBar, parameters);
 
 
@@ -259,7 +268,7 @@ public class DiscoverFragment extends Fragment {
         txtView.setY(30);
         txtView.setPadding(20, 140, 20, 20);
         txtView.setBackgroundColor(Color.WHITE);
-        txtView.getBackground().setAlpha(128);
+        txtView.getBackground().setAlpha(180);
 
         txtView.setTextColor(getResources().getColor(R.color.colorSecondary));
 

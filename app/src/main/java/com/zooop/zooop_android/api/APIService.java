@@ -58,6 +58,10 @@ public class APIService extends AppCompatActivity {
                 }
 
                 String responseBody = response.body().string();
+                if(responseBody == null) {
+                    responseBody = "";
+                }
+
                 callback.receivedResponse(responseBody);
             }
         });
@@ -91,7 +95,7 @@ public class APIService extends AppCompatActivity {
         AsyncRequest asynchronousGet = new AsyncRequest();
 
         try {
-            Request request =  asynchronousGet.apiRequest("adverts-api/get-android-ads", "");
+            Request request = asynchronousGet.apiRequest("adverts-api/get-android-ads", "");
             ApiRequest(request);
         } catch (Exception e) {
             e.printStackTrace();
@@ -124,7 +128,7 @@ public class APIService extends AppCompatActivity {
         String requestBody = getParamsJSON(keys,values).toString();
         Log.d("requestBodyAPI", requestBody);
         try {
-            Request request = call.apiRequest("/clients/new-info", requestBody);
+            Request request = call.apiRequest("clients/new-info", requestBody);
             ApiRequest(request);
         } catch (Exception e) {
             e.printStackTrace();
