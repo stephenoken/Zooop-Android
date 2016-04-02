@@ -2,16 +2,19 @@ package com.zooop.zooop_android.ui.activities;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.ScrollView;
+
 import com.mikepenz.materialdrawer.Drawer;
 import com.mikepenz.materialdrawer.DrawerBuilder;
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
@@ -27,7 +30,6 @@ import com.zooop.zooop_android.ui.fragments.DiggyFragment;
 import com.zooop.zooop_android.ui.fragments.DiscoverFragment;
 import com.zooop.zooop_android.ui.fragments.DiscoverMapFragment;
 
-import java.io.IOException;
 
 public class HomeActivity extends AppCompatActivity {
     private Drawer mDrawer;
@@ -51,7 +53,7 @@ public class HomeActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(String ex) {
-                Log.i("","--------------FAILURE ");
+                Log.i("", "--------------FAILURE ");
                 super.onFailure(ex);
             }
         });
@@ -81,14 +83,13 @@ public class HomeActivity extends AppCompatActivity {
             }
         }
         else {
-            setDiscoverMapsFragment();
+            setDiscoverFragment();
         }
 
-
         // create menu items
-        final PrimaryItem map = new PrimaryItem("Map", 0);
+        final PrimaryItem discover = new PrimaryItem("Discover", 0);
         final Item diggy = new Item("Diggy", 1);
-        final Item discover = new Item("Discover", 2);
+        final Item map = new Item("Map", 2);
 
         // create the menu
         setContentView(R.layout.activity_home);
@@ -100,21 +101,21 @@ public class HomeActivity extends AppCompatActivity {
                 .withActivity(this)
                 .withToolbar(toolbar)
                 .addDrawerItems(
-                        map.drawerItem,
+                        discover.drawerItem,
                         diggy.drawerItem,
-                        discover.drawerItem)
+                        map.drawerItem)
                 .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
                     @Override
                     public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
 
-                        if (position == map.index) {
-                            setDiscoverMapsFragment();
+                        if (position == discover.index) {
+                            setDiscoverFragment();
                             showKeyboard(false, view);
                         } else if (position == diggy.index) {
                             setDiggyFragment();
                             showKeyboard(true, view);
-                        } else if (position == discover.index) {
-                            setDiscoverFragment();
+                        } else if (position == map.index) {
+                            setDiscoverMapsFragment();
                             showKeyboard(false, view);
                         }
 

@@ -48,6 +48,12 @@ public class DiggyFragment extends Fragment {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        Log.i(">>", "CHECK FOR NEW MESSAGES");
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // get this current view
         View view = inflater.inflate(R.layout.fragment_diggy, container, false);
