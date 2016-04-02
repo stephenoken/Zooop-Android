@@ -11,9 +11,9 @@ import android.util.Log;
  * Created by harpreet on 22/03/16.
  */
 
-public class UserDbHelper extends SQLiteOpenHelper {
+public class DbHelper extends SQLiteOpenHelper {
 
-    public UserDbHelper(Context context) {
+    public DbHelper(Context context) {
         super(context, UserContract.DATABASE_NAME, null, UserContract.DATABASE_VERSION);
     }
 

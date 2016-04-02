@@ -8,11 +8,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.EditText;
 import android.widget.Spinner;
 
 import com.zooop.zooop_android.R;
-import com.zooop.zooop_android.models.UserDbHelper;
+import com.zooop.zooop_android.models.DbHelper;
 
 
 
@@ -67,7 +66,7 @@ public class UserIntroActivity extends AppCompatActivity {
 
     private void storeValsAndContinue() {
         //store values permanent
-        final UserDbHelper userDb = new UserDbHelper(getApplicationContext());
+        final DbHelper userDb = new DbHelper(getApplicationContext());
         String details[] = userDb.readReturn();
         userDb.update(details[0], details[1], favCuisine.getSelectedItem().toString(), null);
         startActivity();

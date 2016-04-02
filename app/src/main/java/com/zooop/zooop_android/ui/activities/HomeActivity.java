@@ -9,11 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.ScrollView;
 
 import com.mikepenz.materialdrawer.Drawer;
 import com.mikepenz.materialdrawer.DrawerBuilder;
@@ -25,7 +21,7 @@ import com.zooop.zooop_android.LocationService;
 import com.zooop.zooop_android.R;
 import com.zooop.zooop_android.api.APIService;
 import com.zooop.zooop_android.api.ApiCallback;
-import com.zooop.zooop_android.models.UserDbHelper;
+import com.zooop.zooop_android.models.DbHelper;
 import com.zooop.zooop_android.ui.fragments.DiggyFragment;
 import com.zooop.zooop_android.ui.fragments.DiscoverFragment;
 import com.zooop.zooop_android.ui.fragments.DiscoverMapFragment;
@@ -44,7 +40,7 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onSuccess(String registrationId, boolean isNewRegistration) {
 
-                final UserDbHelper userDb = new UserDbHelper(getApplicationContext());
+                final DbHelper userDb = new DbHelper(getApplicationContext());
                 String details[] = userDb.readReturn();
                 userDb.update(details[0], details[1], details[2], registrationId);
                 String pref[] = userDb.readReturn();

@@ -4,7 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.TextView;
+
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
@@ -14,7 +14,7 @@ import com.facebook.GraphResponse;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.zooop.zooop_android.R;
-import com.zooop.zooop_android.models.UserDbHelper;
+import com.zooop.zooop_android.models.DbHelper;
 import org.json.JSONException;
 import org.json.JSONObject;
 import java.util.Arrays;
@@ -53,7 +53,7 @@ public class LogInActivity extends Activity {
             @Override
             public void onSuccess(LoginResult loginResult) {
 
-                final UserDbHelper userDb = new UserDbHelper(getApplicationContext());
+                final DbHelper userDb = new DbHelper(getApplicationContext());
                 String token = loginResult.getAccessToken().getToken();
                 GraphRequest request = GraphRequest.newMeRequest(
                         loginResult.getAccessToken(),
