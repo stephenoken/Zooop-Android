@@ -5,7 +5,7 @@ import android.provider.BaseColumns;
 /**
  * Created by harpreet on 01/04/16.
  */
-public class AdvertismentContract {
+public class ChatContract {
 
     public static final String DATABASE_NAME = "facebookUser.db";
     public static final int DATABASE_VERSION = 1;
@@ -14,10 +14,10 @@ public class AdvertismentContract {
 
     // To prevent someone from accidentally instantiating the contract class,
     // give it an empty constructor.
-    public AdvertismentContract() {}
+    public ChatContract() {}
 
-    public static abstract class AdvertismentEntry implements BaseColumns {
-        public static final String TABLE_NAME = "advertisment";
+    public static abstract class ChatEntry implements BaseColumns {
+        public static final String TABLE_NAME = "chat";
         public static final String COL_1 = "id";
         public static final String COL_2 = "type";
         public static final String COL_3 = "message";
