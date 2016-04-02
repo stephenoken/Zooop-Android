@@ -2,16 +2,13 @@ package com.zooop.zooop_android.ui.activities;
 
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 
 import android.util.Log;
 import android.widget.TextView;
 
-import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
@@ -21,15 +18,12 @@ import com.facebook.GraphResponse;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.zooop.zooop_android.R;
-import com.zooop.zooop_android.BuildConfig;
-import com.zooop.zooop_android.api.AsyncRequest;
 import com.zooop.zooop_android.models.UserDbHelper;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Arrays;
-import java.util.Set;
 
 
 public class LogInActivity extends Activity {
@@ -37,7 +31,6 @@ public class LogInActivity extends Activity {
     private CallbackManager callbackManager; //Used to route calls back to fb SDK
     private LoginButton loginButton;//  when someone clicks on the button, the login is initiated with the set permissions.
     private String UserName;
-    SharedPreferences preferences;
     //  The button follows the login state,
     //  and displays the correct text based on someone's authentication state
     @Override

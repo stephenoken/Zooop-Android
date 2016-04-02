@@ -20,11 +20,13 @@ public class UserDbHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(UserContract.UserEntry.SQL_CREATE_ENTRIES);
+        db.execSQL(ChatContract.ChatEntry.SQL_CREATE_ENTRIES);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL(UserContract.UserEntry.SQL_DELETE_ENTRIES);
+        db.execSQL(ChatContract.ChatEntry.SQL_DELETE_ENTRIES);
         onCreate(db);
     }
 
@@ -81,5 +83,59 @@ public class UserDbHelper extends SQLiteOpenHelper {
                 + " " + cursor.getString(1)
                 + " " + cursor.getString(2));
     }
+    public boolean insertChat(String type, String message) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        Log.d("Chat to insert->", type + message);
+        values.put(ChatContract.ChatEntry.COL_2, type);
+        values.put(ChatContract.ChatEntry.COL_3, message);
+        long result = db.insert(ChatContract.ChatEntry.TABLE_NAME, null, values);
+        read();
+        if (result == -1)
+            return false;
+
+        else
+            return true;
+    }
+
+    public String[] readReturnChat(){
+        SQLiteDatabase db = this.getReadableDatabase();
+        String selectQuery = "SELECT  * FROM " + "chat";
+        Cursor cursor   = db.rawQuery(selectQuery, null);
+        cursor.moveToLast();
+
+        String ans[] = {cursor.getString(0),
+                cursor.getString(1),
+                cursor.getString(2)};
+        Log.d("readReturn--", ans[0] + ans[1] + ans[2]);
+
+        return ans;
+    }
+
+    public boolean updateChat(String id, String type, String message){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        Log.d("updateDB", id + type + message);
+        cv.put(ChatContract.ChatEntry.COL_1, id);
+        cv.put(ChatContract.ChatEntry.COL_2, type);
+        cv.put(ChatContract.ChatEntry.COL_3, message);
+        db.update(ChatContract.ChatEntry.TABLE_NAME, cv, "id = ?", new String[]{id});
+        readChat();
+        return true;
+
+    }
+
+    public void readChat(){
+        SQLiteDatabase db = this.getReadableDatabase();
+        String selectQuery = "SELECT  * FROM " + "chat";
+        Cursor cursor   = db.rawQuery(selectQuery, null);
+        cursor.moveToLast();
+
+        System.out.println("chat--->" + cursor.getInt(0)
+                + " " + cursor.getString(1)
+                + " " + cursor.getString(2));
+    }
 
 }
+
+
