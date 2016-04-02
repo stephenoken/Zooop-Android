@@ -54,7 +54,6 @@ public class DbHelper extends SQLiteOpenHelper {
                         cursor.getString(1),
                         cursor.getString(2),
                         cursor.getString(3)};
-        Log.d("readReturn--", ans[0] + ans[1] + ans[2]);
 
         return ans;
     }
@@ -70,7 +69,6 @@ public class DbHelper extends SQLiteOpenHelper {
         db.update(UserContract.UserEntry.TABLE_NAME, cv, "id = ?", new String[]{id});
         read();
         return true;
-
     }
 
     public void read(){
@@ -83,6 +81,7 @@ public class DbHelper extends SQLiteOpenHelper {
                 + " " + cursor.getString(1)
                 + " " + cursor.getString(2));
     }
+
     public boolean insertChat(String type, String message) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -122,12 +121,11 @@ public class DbHelper extends SQLiteOpenHelper {
         db.update(ChatContract.ChatEntry.TABLE_NAME, cv, "id = ?", new String[]{id});
         readChat();
         return true;
-
     }
 
     public void readChat(){
         SQLiteDatabase db = this.getReadableDatabase();
-        String selectQuery = "SELECT  * FROM " + "chat";
+        String selectQuery = "SELECT * FROM " + "chat";
         Cursor cursor   = db.rawQuery(selectQuery, null);
         cursor.moveToLast();
 

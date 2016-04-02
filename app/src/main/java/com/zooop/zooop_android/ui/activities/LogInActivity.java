@@ -24,11 +24,24 @@ public class LogInActivity extends Activity {
     private CallbackManager callbackManager; //Used to route calls back to fb SDK
     private LoginButton loginButton;//  when someone clicks on the button, the login is initiated with the set permissions.
     private String UserName;
+    private DbHelper userDb;
+
     //  The button follows the login state,
     //  and displays the correct text based on someone's authentication state
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState); // Saves State and re-renders it when device is rotated
+
+        userDb = new DbHelper(getApplicationContext());
+
+        try {
+            if(!userDb.readReturn()[1].equals("")) {
+                loggedIn();
+            }
+        }
+        catch(Exception e) {
+            Log.e("NO USER FOUND", ":" ,e);
+        }
 
         /** Initializing facebook sdk **/
         FacebookSdk.sdkInitialize(getApplicationContext());
@@ -53,7 +66,7 @@ public class LogInActivity extends Activity {
             @Override
             public void onSuccess(LoginResult loginResult) {
 
-                final DbHelper userDb = new DbHelper(getApplicationContext());
+
                 String token = loginResult.getAccessToken().getToken();
                 GraphRequest request = GraphRequest.newMeRequest(
                         loginResult.getAccessToken(),

@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -27,41 +28,43 @@ public class UserIntroActivity extends AppCompatActivity {
         setContentView(R.layout.activity_user_intro);
 
         /** retrieve the favourite cuisine from the user **/
-        myPreferences = getSharedPreferences ("userInfo", Context.MODE_PRIVATE);
-        String favCuisStr = myPreferences.getString("favCuisine", null);
+        DbHelper userDb = new DbHelper(getApplicationContext());
 
-        if(favCuisStr != null) {
-            startActivity();
-        }
-        else {
-
-            favCuisine = (Spinner) findViewById(R.id.spinnerCuisine);
-
-            favCuisine.setOnKeyListener(new View.OnKeyListener() {
-                @Override
-                public boolean onKey(View view, int i, KeyEvent keyEvent) {
-                    if ((keyEvent.getAction() == KeyEvent.ACTION_DOWN) && (i == KeyEvent.KEYCODE_ENTER)) {
-                        storeValsAndContinue();
-                        return true;
-                    }
-                    return false;
-                }
-            });
-
-            View view = this.getCurrentFocus();
-            if (view != null) {
-                InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_IMPLICIT_ONLY);
+        try {
+            if(!userDb.readReturn()[2].equals("")) {
+                startActivity();
             }
+        }
+        catch(Exception e) {
+            Log.e("NO CUISINE FOUND", ":", e);
+        }
 
-            FloatingActionButton submit = (FloatingActionButton) findViewById(R.id.fab);
-            submit.setOnClickListener(new View.OnClickListener() {
+        favCuisine = (Spinner) findViewById(R.id.spinnerCuisine);
+
+        favCuisine.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View view, int i, KeyEvent keyEvent) {
+                if ((keyEvent.getAction() == KeyEvent.ACTION_DOWN) && (i == KeyEvent.KEYCODE_ENTER)) {
+                    storeValsAndContinue();
+                    return true;
+                }
+                return false;
+            }
+        });
+
+        View view = this.getCurrentFocus();
+        if (view != null) {
+            InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_IMPLICIT_ONLY);
+        }
+
+        FloatingActionButton submit = (FloatingActionButton) findViewById(R.id.fab);
+        submit.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     storeValsAndContinue();
                 }
             });
-        }
     }
 
     private void storeValsAndContinue() {
