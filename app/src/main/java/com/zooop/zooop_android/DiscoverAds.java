@@ -1,5 +1,7 @@
 package com.zooop.zooop_android;
 
+import android.util.Log;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -93,7 +95,7 @@ public class DiscoverAds {
             resultDateString = matcher.group(1);
         }
         else {
-            System.out.println("NO MATCH");
+            Log.i("DiscoverAds:", "NO MATCH");
         }
 
         return resultDateString;

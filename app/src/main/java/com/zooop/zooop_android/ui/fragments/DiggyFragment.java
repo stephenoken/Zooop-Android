@@ -1,10 +1,16 @@
 package com.zooop.zooop_android.ui.fragments;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
@@ -21,12 +27,16 @@ import com.zooop.zooop_android.api.APIService;
 import com.zooop.zooop_android.R;
 import com.zooop.zooop_android.Screen;
 import com.zooop.zooop_android.api.ApiCallback;
+import com.zooop.zooop_android.models.DbHelper;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+interface MyHandlerInterface {
+    void update();
+}
 public class DiggyFragment extends Fragment {
     enum SIDE {
         USER, DIGGY;
@@ -43,20 +53,21 @@ public class DiggyFragment extends Fragment {
     Screen screen = new Screen();
     LinearLayout chatLayer;
 
-    public DiggyFragment() {
-        // Required empty public constructor
-    }
+    public DiggyFragment() {/*empty constr requiered*/}
 
     @Override
     public void onResume() {
         super.onResume();
-        Log.i(">>", "CHECK FOR NEW MESSAGES");
+        loadMessagesFromDB();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // get this current view
         View view = inflater.inflate(R.layout.fragment_diggy, container, false);
+
+        LocalBroadcastManager.getInstance(getActivity()).registerReceiver(mMessageReceiver,
+                new IntentFilter("newMessageEvent"));
 
         // get and setup scrollview
         scrollView = (ScrollView) view.findViewById(R.id.scrollView);
@@ -83,6 +94,50 @@ public class DiggyFragment extends Fragment {
                 });
 
         return view;
+    }
+
+    private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String message = intent.getStringExtra("message");
+            TextView chatView = getMsgDiggy(message);
+
+            addChatField(chatView);
+        }
+    };
+
+    @Override
+    public void onDestroy() {
+        LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(mMessageReceiver);
+        super.onDestroy();
+    }
+
+    private void loadMessagesFromDB() {
+        final DbHelper dbHelper = new DbHelper(getContext());
+        try {
+            String messagePacket[] = dbHelper.readReturnChat();
+
+            if(!messagePacket[0].equals("") && !messagePacket[1].equals("") && !messagePacket[2].equals("")) {
+                Log.i("CHAT", messagePacket[0]);
+                Log.i("CH2", messagePacket[1]);
+                Log.i("CH3", messagePacket[2]);
+
+                TextView chatView;
+
+                if(messagePacket[1].equals("DIGGY")) {
+                    chatView = getMsgDiggy(messagePacket[2]);
+                }
+                else {
+                    chatView = getMsgUser(messagePacket[2]);
+                }
+                addChatField(chatView);
+            }
+        }
+        catch(Exception e) {
+            Log.e("NO CUISINE FOUND", ":", e);
+        }
+
+
     }
 
     private TextView getMsgDiggy(String message) {

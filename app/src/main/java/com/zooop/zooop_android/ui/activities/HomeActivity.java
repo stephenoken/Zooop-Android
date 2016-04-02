@@ -35,15 +35,17 @@ public class HomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        DiggyFragment.getInstance();
+
         GCMClientManager pushClientManager = new GCMClientManager(this, PROJECT_NUMBER);
         pushClientManager.registerIfNeeded(new GCMClientManager.RegistrationCompletedHandler() {
             @Override
             public void onSuccess(String registrationId, boolean isNewRegistration) {
 
-                final DbHelper userDb = new DbHelper(getApplicationContext());
-                String details[] = userDb.readReturn();
-                userDb.update(details[0], details[1], details[2], registrationId);
-                String pref[] = userDb.readReturn();
+                final DbHelper dbHelper = new DbHelper(getApplicationContext());
+                String details[] = dbHelper.readReturn();
+                dbHelper.update(details[0], details[1], details[2], registrationId);
+                String pref[] = dbHelper.readReturn();
                 postUserPrefference(pref[3], pref[1], pref[2]);
             }
 
@@ -150,8 +152,8 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private void setDiggyFragment() {
-        Fragment fragment = DiggyFragment.getInstance();
-        changeFragment(fragment);
+        DiggyFragment diggyFragment = DiggyFragment.getInstance();
+        changeFragment(diggyFragment);
     }
 
     private void setDiscoverFragment() {

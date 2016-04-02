@@ -21,17 +21,16 @@ import com.zooop.zooop_android.models.DbHelper;
  */
 public class UserIntroActivity extends AppCompatActivity {
     Spinner favCuisine;
-    SharedPreferences myPreferences;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_intro);
 
         /** retrieve the favourite cuisine from the user **/
-        DbHelper userDb = new DbHelper(getApplicationContext());
+        DbHelper dbHelper = new DbHelper(getApplicationContext());
 
         try {
-            if(!userDb.readReturn()[2].equals("")) {
+            if(!dbHelper.readReturn()[2].equals("")) {
                 startActivity();
             }
         }

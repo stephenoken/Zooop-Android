@@ -76,10 +76,6 @@ public class DbHelper extends SQLiteOpenHelper {
         String selectQuery = "SELECT  * FROM " + "user";
         Cursor cursor   = db.rawQuery(selectQuery, null);
         cursor.moveToLast();
-
-        System.out.println("User--->" + cursor.getInt(0)
-                + " " + cursor.getString(1)
-                + " " + cursor.getString(2));
     }
 
     public boolean insertChat(String type, String message) {
@@ -123,15 +119,19 @@ public class DbHelper extends SQLiteOpenHelper {
         return true;
     }
 
-    public void readChat(){
+    public String[] readChat(){
         SQLiteDatabase db = this.getReadableDatabase();
         String selectQuery = "SELECT * FROM " + "chat";
         Cursor cursor   = db.rawQuery(selectQuery, null);
         cursor.moveToLast();
 
-        System.out.println("chat--->" + cursor.getInt(0)
-                + " " + cursor.getString(1)
-                + " " + cursor.getString(2));
+        Log.i("\n\n\n\n------->", cursor.toString());
+
+        String ans[] = {cursor.getString(0),
+                cursor.getString(1),
+                cursor.getString(2)};
+
+        return ans;
     }
 
 }

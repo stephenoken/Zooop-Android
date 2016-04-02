@@ -49,8 +49,6 @@ public class GCMClientManager {
             if (regid.isEmpty()) {
                 registerInBackground(handler);
             } else {
-                System.out.println(regid);
-
                 handler.onSuccess(regid, false);
             }
         } else {
