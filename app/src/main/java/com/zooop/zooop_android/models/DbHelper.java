@@ -7,6 +7,10 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+
 /**
  * Created by harpreet on 22/03/16.
  */
@@ -119,21 +123,32 @@ public class DbHelper extends SQLiteOpenHelper {
         return true;
     }
 
-    public String[] readChat(){
+    public ArrayList<String[]> readChat(){
+
+        ArrayList<String[]> chatEntries = new ArrayList<String[]>();
+
         SQLiteDatabase db = this.getReadableDatabase();
-        String selectQuery = "SELECT * FROM " + "chat";
+        String selectQuery = "" +
+                "SELECT * " +
+                "FROM chat " +
+                "ORDER BY id DESC " +
+                "LIMIT 10";
         Cursor cursor   = db.rawQuery(selectQuery, null);
-        cursor.moveToLast();
 
-        Log.i("\n\n\n\n------->", cursor.toString());
+        if (cursor .moveToFirst()) {
+            while (cursor.isAfterLast() == false) {
+                String entries[] = {cursor.getString(0),
+                        cursor.getString(0),
+                        cursor.getString(1),
+                        cursor.getString(2)};
 
-        String ans[] = {cursor.getString(0),
-                cursor.getString(1),
-                cursor.getString(2)};
+                chatEntries.add(entries);
+                cursor.moveToNext();
+            }
+        }
 
-        return ans;
+        return chatEntries;
     }
-
 }
 
 

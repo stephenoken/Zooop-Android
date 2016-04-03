@@ -29,13 +29,16 @@ import com.zooop.zooop_android.ui.fragments.DiscoverMapFragment;
 
 public class HomeActivity extends AppCompatActivity {
     private Drawer mDrawer;
+    final private static String PROJECT_NUMBER = "436096000964";
 
-    String PROJECT_NUMBER = "436096000964";
+    @Override
+    public void onResume() {
+        super.onResume();
+        DiggyFragment.getInstance();
+    }
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        DiggyFragment.getInstance();
 
         GCMClientManager pushClientManager = new GCMClientManager(this, PROJECT_NUMBER);
         pushClientManager.registerIfNeeded(new GCMClientManager.RegistrationCompletedHandler() {
@@ -51,7 +54,7 @@ public class HomeActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(String ex) {
-                Log.i("", "--------------FAILURE ");
+                Log.i("Home Activity", "FAILURE ");
                 super.onFailure(ex);
             }
         });
@@ -62,9 +65,6 @@ public class HomeActivity extends AppCompatActivity {
         LocationService locationService = new LocationService(HomeActivity.this);
         if(!locationService.locationPermissions()) {
             locationService.requestLocationPermissions();
-        }
-        else {
-            Log.i("PERMISSIONS", "LOCATION");
         }
 
         // set initial fragment

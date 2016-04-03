@@ -95,7 +95,7 @@ public class DiscoverAds {
             resultDateString = matcher.group(1);
         }
         else {
-            Log.i("DiscoverAds:", "NO MATCH");
+            Log.d("DiscoverAds:", "NO MATCH");
         }
 
         return resultDateString;

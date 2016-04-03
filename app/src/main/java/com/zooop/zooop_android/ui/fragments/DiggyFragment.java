@@ -33,6 +33,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 interface MyHandlerInterface {
     void update();
@@ -114,30 +115,23 @@ public class DiggyFragment extends Fragment {
 
     private void loadMessagesFromDB() {
         final DbHelper dbHelper = new DbHelper(getContext());
-        try {
-            String messagePacket[] = dbHelper.readReturnChat();
 
-            if(!messagePacket[0].equals("") && !messagePacket[1].equals("") && !messagePacket[2].equals("")) {
-                Log.i("CHAT", messagePacket[0]);
-                Log.i("CH2", messagePacket[1]);
-                Log.i("CH3", messagePacket[2]);
+        ArrayList<String[]> messagePacket = dbHelper.readChat();
+        TextView chatView;
 
-                TextView chatView;
-
-                if(messagePacket[1].equals("DIGGY")) {
-                    chatView = getMsgDiggy(messagePacket[2]);
-                }
-                else {
-                    chatView = getMsgUser(messagePacket[2]);
-                }
-                addChatField(chatView);
+        for(int i = messagePacket.size()-1; i >= 0; i--) {
+            if ( messagePacket.get(i)[2].equals("DIGGY")) {
+                chatView = getMsgDiggy( messagePacket.get(i)[3]);
+            } else {
+                chatView = getMsgUser( messagePacket.get(i)[3]);
             }
+            addChatField(chatView);
         }
-        catch(Exception e) {
-            Log.e("NO CUISINE FOUND", ":", e);
-        }
+    }
 
-
+    private void addMessagetoDB(String type, String message) {
+        final DbHelper dbHelper = new DbHelper(getContext());
+        dbHelper.insertChat(type, message);
     }
 
     private TextView getMsgDiggy(String message) {
@@ -145,6 +139,7 @@ public class DiggyFragment extends Fragment {
         chatField.setTextColor(getResources().getColor(R.color.primary));
         chatField.setBackgroundColor(Color.WHITE);
         chatField.setText(message);
+
         return chatField;
     }
 
@@ -153,6 +148,7 @@ public class DiggyFragment extends Fragment {
         chatField.setTextColor(Color.WHITE);
         chatField.setBackgroundColor(getResources().getColor(R.color.primary));
         chatField.setText(message);
+
         return chatField;
     }
 
@@ -207,9 +203,10 @@ public class DiggyFragment extends Fragment {
         TextView textView = getMsgUser(text);
         addChatField(textView);
 
+        addMessagetoDB("USER", text);
+
         //send iput to diggyApi and add respond to view
         retrieveDiggyAnswer(text);
-
 
 
         inputField.requestFocus();
@@ -228,11 +225,14 @@ public class DiggyFragment extends Fragment {
                     JSONObject jsonObj = null;
                     try {
                         jsonObj = new JSONObject(responseString);
-                        final TextView textView = getMsgDiggy(jsonObj.getString("diggyResponse"));
+                        final String diggyMsg = jsonObj.getString("diggyResponse");
+                        final TextView textView = getMsgDiggy(diggyMsg);
 
                         Handler refresh = new Handler(Looper.getMainLooper());
                         refresh.post(new Runnable() {
                             public void run() {
+
+                                addMessagetoDB("DIGGY", diggyMsg);
                                 addChatField(textView);
                             }
                         });

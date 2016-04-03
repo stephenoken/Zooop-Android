@@ -52,7 +52,7 @@ public class GCMClientManager {
                 handler.onSuccess(regid, false);
             }
         } else {
-            Log.i(TAG, "No valid Google Play Services APK found.");
+            Log.d(TAG, "No valid Google Play Services APK found.");
         }
     }
     /**
@@ -93,14 +93,14 @@ public class GCMClientManager {
         final SharedPreferences prefs = getGCMPreferences(context);
         String registrationId = prefs.getString(PROPERTY_REG_ID, "");
         if (registrationId.isEmpty()) {
-            Log.i(TAG, "Registration not found.");
+            Log.d(TAG, "Registration not found.");
             return "";
         }
 
         int registeredVersion = prefs.getInt(PROPERTY_APP_VERSION, Integer.MIN_VALUE);
         int currentVersion = getAppVersion(context);
         if (registeredVersion != currentVersion) {
-            Log.i(TAG, "App version changed.");
+            Log.d(TAG, "App version changed.");
             return "";
         }
         return registrationId;
@@ -131,7 +131,7 @@ public class GCMClientManager {
                 GooglePlayServicesUtil.getErrorDialog(resultCode, getActivity(),
                         PLAY_SERVICES_RESOLUTION_REQUEST).show();
             } else {
-                Log.i(TAG, "This device is not supported.");
+                Log.d(TAG, "This device is not supported.");
             }
             return false;
         }
