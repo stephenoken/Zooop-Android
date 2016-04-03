@@ -8,10 +8,12 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.NotificationCompat;
+import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
 import com.google.android.gms.gcm.GcmListenerService;
 import com.zooop.zooop_android.R;
+import com.zooop.zooop_android.models.DbHelper;
 import com.zooop.zooop_android.ui.activities.HomeActivity;
 import com.zooop.zooop_android.ui.fragments.DiggyFragment;
 
@@ -24,6 +26,17 @@ public class PushNotificationService extends GcmListenerService {
     public void onMessageReceived(String from, Bundle data) {
         String message = data.getString("message");
         sendNotification(message);
+
+        addMessagetoDB(message);
+
+        Intent intent = new Intent("newMessageEvent");
+        intent.putExtra("message", message);
+        LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+    }
+
+    private void addMessagetoDB(String message) {
+        final DbHelper dbHelper = new DbHelper(getApplicationContext());
+        dbHelper.insertChat("DIGGY", message);
     }
 
     private void sendNotification(String message) {

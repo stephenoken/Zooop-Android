@@ -29,8 +29,13 @@ import com.zooop.zooop_android.ui.fragments.DiscoverMapFragment;
 
 public class HomeActivity extends AppCompatActivity {
     private Drawer mDrawer;
+    final private static String PROJECT_NUMBER = "436096000964";
 
-    String PROJECT_NUMBER = "436096000964";
+    @Override
+    public void onResume() {
+        super.onResume();
+        DiggyFragment.getInstance();
+    }
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,16 +45,16 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onSuccess(String registrationId, boolean isNewRegistration) {
 
-                final DbHelper userDb = new DbHelper(getApplicationContext());
-                String details[] = userDb.readReturn();
-                userDb.update(details[0], details[1], details[2], registrationId);
-                String pref[] = userDb.readReturn();
+                final DbHelper dbHelper = new DbHelper(getApplicationContext());
+                String details[] = dbHelper.readReturn();
+                dbHelper.update(details[0], details[1], details[2], registrationId);
+                String pref[] = dbHelper.readReturn();
                 postUserPrefference(pref[3], pref[1], pref[2]);
             }
 
             @Override
             public void onFailure(String ex) {
-                Log.i("", "--------------FAILURE ");
+                Log.i("Home Activity", "FAILURE ");
                 super.onFailure(ex);
             }
         });
@@ -60,9 +65,6 @@ public class HomeActivity extends AppCompatActivity {
         LocationService locationService = new LocationService(HomeActivity.this);
         if(!locationService.locationPermissions()) {
             locationService.requestLocationPermissions();
-        }
-        else {
-            Log.i("PERMISSIONS", "LOCATION");
         }
 
         // set initial fragment
@@ -150,8 +152,8 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private void setDiggyFragment() {
-        Fragment fragment = DiggyFragment.getInstance();
-        changeFragment(fragment);
+        DiggyFragment diggyFragment = DiggyFragment.getInstance();
+        changeFragment(diggyFragment);
     }
 
     private void setDiscoverFragment() {

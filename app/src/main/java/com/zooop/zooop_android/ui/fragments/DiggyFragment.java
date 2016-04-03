@@ -1,10 +1,16 @@
 package com.zooop.zooop_android.ui.fragments;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
@@ -21,12 +27,17 @@ import com.zooop.zooop_android.api.APIService;
 import com.zooop.zooop_android.R;
 import com.zooop.zooop_android.Screen;
 import com.zooop.zooop_android.api.ApiCallback;
+import com.zooop.zooop_android.models.DbHelper;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
+interface MyHandlerInterface {
+    void update();
+}
 public class DiggyFragment extends Fragment {
     enum SIDE {
         USER, DIGGY;
@@ -43,20 +54,21 @@ public class DiggyFragment extends Fragment {
     Screen screen = new Screen();
     LinearLayout chatLayer;
 
-    public DiggyFragment() {
-        // Required empty public constructor
-    }
+    public DiggyFragment() {/*empty constr requiered*/}
 
     @Override
     public void onResume() {
         super.onResume();
-        Log.i(">>", "CHECK FOR NEW MESSAGES");
+        loadMessagesFromDB();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // get this current view
         View view = inflater.inflate(R.layout.fragment_diggy, container, false);
+
+        LocalBroadcastManager.getInstance(getActivity()).registerReceiver(mMessageReceiver,
+                new IntentFilter("newMessageEvent"));
 
         // get and setup scrollview
         scrollView = (ScrollView) view.findViewById(R.id.scrollView);
@@ -85,11 +97,49 @@ public class DiggyFragment extends Fragment {
         return view;
     }
 
+    private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String message = intent.getStringExtra("message");
+            TextView chatView = getMsgDiggy(message);
+
+            addChatField(chatView);
+        }
+    };
+
+    @Override
+    public void onDestroy() {
+        LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(mMessageReceiver);
+        super.onDestroy();
+    }
+
+    private void loadMessagesFromDB() {
+        final DbHelper dbHelper = new DbHelper(getContext());
+
+        ArrayList<String[]> messagePacket = dbHelper.readChat();
+        TextView chatView;
+
+        for(int i = messagePacket.size()-1; i >= 0; i--) {
+            if ( messagePacket.get(i)[2].equals("DIGGY")) {
+                chatView = getMsgDiggy( messagePacket.get(i)[3]);
+            } else {
+                chatView = getMsgUser( messagePacket.get(i)[3]);
+            }
+            addChatField(chatView);
+        }
+    }
+
+    private void addMessagetoDB(String type, String message) {
+        final DbHelper dbHelper = new DbHelper(getContext());
+        dbHelper.insertChat(type, message);
+    }
+
     private TextView getMsgDiggy(String message) {
         TextView chatField = getChatView(SIDE.DIGGY);
         chatField.setTextColor(getResources().getColor(R.color.primary));
         chatField.setBackgroundColor(Color.WHITE);
         chatField.setText(message);
+
         return chatField;
     }
 
@@ -98,6 +148,7 @@ public class DiggyFragment extends Fragment {
         chatField.setTextColor(Color.WHITE);
         chatField.setBackgroundColor(getResources().getColor(R.color.primary));
         chatField.setText(message);
+
         return chatField;
     }
 
@@ -152,9 +203,10 @@ public class DiggyFragment extends Fragment {
         TextView textView = getMsgUser(text);
         addChatField(textView);
 
+        addMessagetoDB("USER", text);
+
         //send iput to diggyApi and add respond to view
         retrieveDiggyAnswer(text);
-
 
 
         inputField.requestFocus();
@@ -173,11 +225,14 @@ public class DiggyFragment extends Fragment {
                     JSONObject jsonObj = null;
                     try {
                         jsonObj = new JSONObject(responseString);
-                        final TextView textView = getMsgDiggy(jsonObj.getString("diggyResponse"));
+                        final String diggyMsg = jsonObj.getString("diggyResponse");
+                        final TextView textView = getMsgDiggy(diggyMsg);
 
                         Handler refresh = new Handler(Looper.getMainLooper());
                         refresh.post(new Runnable() {
                             public void run() {
+
+                                addMessagetoDB("DIGGY", diggyMsg);
                                 addChatField(textView);
                             }
                         });
