@@ -40,6 +40,8 @@ public class APIService extends AppCompatActivity {
         this.imageCallback = callback;
     }
 
+    public APIService() {}
+
     public void ApiRequest(Request request) {
         client.newCall(request).enqueue(new Callback() {
             @Override
@@ -146,7 +148,7 @@ public class APIService extends AppCompatActivity {
         }
     }
 
-    private JSONObject getParamsJSON(String[] keys, String[] values) {
+    protected JSONObject getParamsJSON(String[] keys, String[] values) {
         int numberOfParameters = keys.length;
 
         if(numberOfParameters > 0) {

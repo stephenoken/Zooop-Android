@@ -35,9 +35,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-interface MyHandlerInterface {
-    void update();
-}
+
 public class DiggyFragment extends Fragment {
     enum SIDE {
         USER, DIGGY;

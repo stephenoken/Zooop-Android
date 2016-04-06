@@ -25,6 +25,7 @@ import com.zooop.zooop_android.models.DbHelper;
 import com.zooop.zooop_android.ui.fragments.DiggyFragment;
 import com.zooop.zooop_android.ui.fragments.DiscoverFragment;
 import com.zooop.zooop_android.ui.fragments.DiscoverMapFragment;
+import com.zooop.zooop_android.ui.fragments.MenuFragment;
 
 
 public class HomeActivity extends AppCompatActivity {
