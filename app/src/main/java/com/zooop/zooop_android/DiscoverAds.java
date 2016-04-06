@@ -68,7 +68,7 @@ public class DiscoverAds {
         this.shopLocation = new LCoordinates(loc[0], loc[1]);
     }
 
-    private Date dateFromDateString(String dateString) {
+    protected Date dateFromDateString(String dateString) {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
         String newDateString = removeTimeZomeFromTimeString(dateString);
 
